@@ -27,9 +27,8 @@ jobs:
     - name: Create upm branch
       run: |
         git branch -d upm &> /dev/null || echo upm branch not found
-        git subtree split -P "$PKG_ROOT" -b upm
         git status
-        git checkout upm
+        git checkout -b upm
         if [[ -d "Samples" ]]; then
           git mv Samples Samples~
           rm -f Samples.meta
@@ -39,7 +38,7 @@ jobs:
         fi
         git push -f -u origin upm
       env:
-        PKG_ROOT: /
+        PKG_ROOT: .
     - name: Create upm git tag
       if: steps.semantic.outputs.new_release_published == 'true'
       run: |
