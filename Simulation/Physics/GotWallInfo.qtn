@@ -1,0 +1,5 @@
+component GotWallInfo
+{
+    FPVector3 wallPoint;
+    FPVector3 wallNormal;
+}

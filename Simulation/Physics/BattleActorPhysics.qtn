@@ -1,0 +1,10 @@
+component BattleActorPhysics
+{
+    StateGroundedType currentGroundedState;
+    FP pushStrength;
+    FP selfPushStrength;
+    FPVector3 force;
+    FPVector3 conservedIntertia;
+    FPVector3 rotationDir;
+    FPVector3 externalCollisionImpulse;
+}
