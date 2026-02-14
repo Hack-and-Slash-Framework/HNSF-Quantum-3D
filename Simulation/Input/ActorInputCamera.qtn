@@ -1,0 +1,6 @@
+component ActorInputCamera
+{
+    array<FPVector3>[CAMERA_BUFFER_SIZE] CameraForward;
+    array<FPVector3>[CAMERA_BUFFER_SIZE] CameraRight;
+    short position;
+}
