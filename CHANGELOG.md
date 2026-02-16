@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.1.0...v1.2.0) (2026-02-16)
+
+
+### Features
+
+* Added custom KCC processor ([900e73b](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/900e73bbd4a7381aed8784076f63f9be7c09c47f))
+
 # [1.1.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.0.0...v1.1.0) (2026-02-14)
 
 
