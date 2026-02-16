@@ -11,7 +11,7 @@ namespace HnSF.core.state.actions
         public bool autoDelete = true;
         public int hitboxIdentifer;
         public int priority;
-        public AssetRef<HitInfo> hitInfo;
+        public AssetRef<HitInfoBase> hitInfo;
         
         public bool useExternalShapeConfig;
         [DrawIf(nameof(useExternalShapeConfig), true)]

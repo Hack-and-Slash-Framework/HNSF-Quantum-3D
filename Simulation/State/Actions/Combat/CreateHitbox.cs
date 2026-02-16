@@ -10,7 +10,7 @@ namespace HnSF.core.state.actions
     {
         public int hitboxIdentifer;
         public int priority;
-        public AssetRef<HitInfo> hitInfo;
+        public AssetRef<HitInfoBase> hitInfo;
 
         public bool useExternalShapeConfig;
         [DrawIf(nameof(useExternalShapeConfig), true)]

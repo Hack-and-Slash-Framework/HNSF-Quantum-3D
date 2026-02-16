@@ -105,7 +105,7 @@ namespace HnSF.core.systems
                 if (!combatTeamA->IsHostileTowards(frame, combatTeamB->value)) continue;
                 
                 if(frame.TryFindAsset<HurtboxInfo>(bHurtbox->hurtboxInfoRef, out var hurtboxInfo)
-                   && frame.TryFindAsset<HitInfo>(aHitbox->hitInfoRef, out var hitInfo))
+                   && frame.TryFindAsset<HitInfoBase>(aHitbox->hitInfoRef, out var hitInfo))
                 {
                     if(HitAttributeHelper.IsHurtboxAttributeInvincible(frame.SimulationConfig, hurtboxInfo.invincibleAgainstAttributes, hitInfo.attributes)) continue;
                 }
@@ -187,9 +187,9 @@ namespace HnSF.core.systems
                 var combatTeamB = frame.Unsafe.GetPointer<CombatTeam>(hitboxB->owner);
                 if (!combatTeamA->IsHostileTowards(frame, combatTeamB->value)) continue;
 
-                bool aHasHitInfo = frame.TryFindAsset<HitInfo>(hitboxA->hitInfoRef, out var aHitInfo);
+                bool aHasHitInfo = frame.TryFindAsset<HitInfoBase>(hitboxA->hitInfoRef, out var aHitInfo);
                 if (!aHasHitInfo) continue;
-                bool bHasHitInfo = frame.TryFindAsset<HitInfo>(hitboxB->hitInfoRef, out var bHitInfo);
+                bool bHasHitInfo = frame.TryFindAsset<HitInfoBase>(hitboxB->hitInfoRef, out var bHitInfo);
                 if(!bHasHitInfo) continue;
                 
                 if (aHitInfo.dontClash || bHitInfo.dontClash) continue;
