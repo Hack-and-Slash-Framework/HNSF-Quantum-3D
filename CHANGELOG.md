@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.2.0...v1.3.0) (2026-02-18)
+
+
+### Features
+
+* Added entity view scripts ([a30b8bc](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/a30b8bc3029492722b9d5c8f5e2b9a6df7cc7664))
+
 # [1.2.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.1.0...v1.2.0) (2026-02-16)
 
 
