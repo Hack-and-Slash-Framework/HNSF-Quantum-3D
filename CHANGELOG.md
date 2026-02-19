@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.3.0...v1.4.0) (2026-02-19)
+
+
+### Features
+
+* Baked animation data ([3a12322](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/3a1232283b56f520a253677bdc4ef416072c200c))
+
 # [1.3.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.2.0...v1.3.0) (2026-02-18)
 
 
