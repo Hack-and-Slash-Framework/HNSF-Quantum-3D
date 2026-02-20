@@ -1,0 +1,17 @@
+component LastHitByInfo
+{
+    int lastHitOnFrame;
+    FPVector3 hitByEntityPosition;
+    FPVector3 hitByPosition;
+    int hitByHurtboxWasHit;
+    asset_ref<HurtboxInfo> hitHurtboxInfo;
+    entity_ref hitByEntity;
+    TeamBitmask hitByTeam;
+    asset_ref<HitInfoBase> hitByInfo;
+    uint hitByStateIdentifier;
+    asset_ref<HnSF.core.state.HNSFState> hitByState;
+    HitReactionResultData lastReceivedHitReaction;
+    int lastHitstopAmount;
+    int lastHitstunAmount;
+    int lastBlockstunAmount;
+}
