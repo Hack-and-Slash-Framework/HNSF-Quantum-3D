@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.5.0...v1.6.0) (2026-02-20)
+
+
+### Features
+
+* Added LastHitByInfo ([48b7396](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/48b7396d31da951d051bf89602c102f0ba139d37))
+
 # [1.5.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.4.0...v1.5.0) (2026-02-20)
 
 
