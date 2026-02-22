@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.6.0...v1.7.0) (2026-02-22)
+
+
+### Features
+
+* DirectDamage and default HitResolver ([13390a3](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/13390a3ebebe5618fe19574facd3f11851cecb4f))
+
 # [1.6.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.5.0...v1.6.0) (2026-02-20)
 
 
