@@ -1,8 +1,12 @@
 {
-  "name": "com.christides.hnsf-quantum-3d",
-  "version": "1.7.0",
-  "displayName": "Hack and Slash Framework Quantum Edition - 3D",
-  "description": "A framework for hack and slash games.",
-  "unity": "6000.3",
-  "samples": []
+	"name": "com.christides.hnsf-quantum-3d",
+	"version": "1.7.0",
+	"displayName": "Hack and Slash Framework Quantum Edition - 3D",
+	"description": "A framework for hack and slash games.",
+	"unity": "6000.3",
+	"samples": [],
+	"author": {
+		"name": "ChrisTides",
+		"url": ""
+	}
 }
