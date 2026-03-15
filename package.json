@@ -4,7 +4,13 @@
 	"displayName": "Hack and Slash Framework Quantum Edition - 3D",
 	"description": "A framework for hack and slash games.",
 	"unity": "6000.3",
-	"samples": [],
+	"samples": [
+		{
+			"displayName": "Stats",
+			"description": "Stat support.",
+			"path": "Samples~/Stats"
+		}
+	],
 	"author": {
 		"name": "ChrisTides",
 		"url": ""
