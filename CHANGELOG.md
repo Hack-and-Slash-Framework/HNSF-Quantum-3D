@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.7.1...v1.7.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* Stat sample now appears in menu ([b5937d9](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/b5937d916eb15eaa9c088c20f7f8f8169e74e57e))
+
 ## [1.7.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.7.0...v1.7.1) (2026-03-14)
 
 
