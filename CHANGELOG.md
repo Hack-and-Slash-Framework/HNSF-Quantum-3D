@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.8.0...v1.8.1) (2026-03-17)
+
+
+### Bug Fixes
+
+* Fix AnimationEntry naming ([6a0b760](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/6a0b76002f8bf6cfe60a4cb16c43f08c21fb8d72))
+
 # [1.8.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.7.2...v1.8.0) (2026-03-17)
 
 
