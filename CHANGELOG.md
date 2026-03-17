@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.7.2...v1.8.0) (2026-03-17)
+
+
+### Features
+
+* Event receivers ([b3552e8](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/b3552e8274aabf43098c03bef449e430026c10ab))
+
 ## [1.7.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.7.1...v1.7.2) (2026-03-15)
 
 
