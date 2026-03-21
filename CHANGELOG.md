@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.8.1...v1.8.2) (2026-03-21)
+
+
+### Bug Fixes
+
+* Fix play sound error on exit play mode ([701b392](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/701b392538c94851214dc46b3d1ef32bc27e877b))
+
 ## [1.8.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.8.0...v1.8.1) (2026-03-17)
 
 
