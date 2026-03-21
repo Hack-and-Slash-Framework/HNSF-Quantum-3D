@@ -129,7 +129,11 @@ namespace HnSF
                         ve.audioSource.clip = null;
                         ve.gameObject.SetActive(false);
                     },
-                    actionOnDestroy: (ve) => GameObject.Destroy(ve.gameObject),
+                    actionOnDestroy: (ve) =>
+                    {
+                        if (ve == null) return;
+                        GameObject.Destroy(ve.gameObject);
+                    },
                     collectionCheck: false,
                     defaultCapacity: 10,
                     maxSize: 30
