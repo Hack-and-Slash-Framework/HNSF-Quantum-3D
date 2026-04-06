@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.8.2...v1.9.0) (2026-04-06)
+
+
+### Features
+
+* Various state stuff ([42a95d9](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/42a95d9dec813ed81d8a48a56c0a7627d9067e6d))
+
 ## [1.8.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.8.1...v1.8.2) (2026-03-21)
 
 
