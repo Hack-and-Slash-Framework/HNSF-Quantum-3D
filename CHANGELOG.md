@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.9.0...v1.9.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* Fixed camera buffer out of bounds ([8784afd](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/8784afd79e80c3d5ab864bca01be0d1249331f7f))
+
 # [1.9.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.8.2...v1.9.0) (2026-04-06)
 
 
