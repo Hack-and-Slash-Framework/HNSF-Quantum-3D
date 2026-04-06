@@ -7,13 +7,13 @@ namespace Quantum
         public FPVector3 GetForward(short offset = 0)
         {
             if(offset >= Constants.CAMERA_BUFFER_SIZE) offset = Constants.CAMERA_BUFFER_SIZE-1;
-            return CameraForward[position - offset];
+            return CameraForward[(position - offset) % (Constants.CAMERA_BUFFER_SIZE)];
         }
         
         public FPVector3 GetRight(short offset = 0)
         {
             if(offset >= Constants.CAMERA_BUFFER_SIZE) offset = Constants.CAMERA_BUFFER_SIZE-1;
-            return CameraRight[position - offset];
+            return CameraRight[(position - offset) % (Constants.CAMERA_BUFFER_SIZE)];
         }
         
         public FPVector3 GetMovementVector(short offset, FPVector2 moveInput, bool ignoreY = true)
