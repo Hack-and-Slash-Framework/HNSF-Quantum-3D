@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.10.0...v1.11.0) (2026-04-17)
+
+
+### Features
+
+* Movement vector function fix ([8204eec](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/8204eec11422fa86e46455ae9cb156441bd7d9fc))
+
 # [1.10.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.9.1...v1.10.0) (2026-04-17)
 
 
