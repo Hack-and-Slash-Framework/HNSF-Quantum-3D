@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.9.1...v1.10.0) (2026-04-17)
+
+
+### Features
+
+* Movement action based on hard target ([d9d212d](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/d9d212ddd77834d0af635fc0016656d2b0d06a47))
+
 ## [1.9.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.9.0...v1.9.1) (2026-04-06)
 
 
