@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.11.0...v1.12.0) (2026-04-17)
+
+
+### Features
+
+* ApplyMovement based on rotation input ([820f69e](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/820f69e9a79b57ffb036d69a2f3ae451e977b87f))
+
 # [1.11.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.10.0...v1.11.0) (2026-04-17)
 
 
