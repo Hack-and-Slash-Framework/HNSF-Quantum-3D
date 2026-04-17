@@ -23,6 +23,7 @@ namespace HnSF.core.state.actions
             Camera,
             Wall,
             HardTarget,
+            Rotation,
             Raw
         }
 
@@ -81,6 +82,11 @@ namespace HnSF.core.state.actions
                                     input = (combatTargeter->lookForward.XOZ.Normalized * input.Z) +
                                             (combatTargeter->lookRight.XOZ.Normalized * input.X);
                                 }
+                                break;
+                            case StickCameraSourceType.Rotation:
+                                input = bufferMovement->GetMovement(0).XOY;
+                                input = (transform->Forward.XOZ.Normalized * input.Z) +
+                                        (transform->Right.XOZ.Normalized * input.X);
                                 break;
                             case StickCameraSourceType.Raw:
                                 input = bufferMovement->GetMovement(0).XOY;
