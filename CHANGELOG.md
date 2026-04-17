@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.12.0...v1.13.0) (2026-04-17)
+
+
+### Features
+
+* Get movement vector based on rot ([14d4abc](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/14d4abc4181a79a4d508ca455b04019e468e9eeb))
+
 # [1.12.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.11.0...v1.12.0) (2026-04-17)
 
 
