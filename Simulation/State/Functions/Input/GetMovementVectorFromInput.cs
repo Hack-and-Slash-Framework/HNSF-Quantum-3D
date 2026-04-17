@@ -17,7 +17,8 @@ namespace HnSF.core.state.functions
         public enum MoveInputBasedOnType
         {
             Camera,
-            HardTarget
+            HardTarget,
+            Rotation
         }
 
         public SourceType[] eulerSource = Array.Empty<SourceType>();
@@ -81,6 +82,13 @@ namespace HnSF.core.state.functions
                     {
                         tForward = combatTargeter->lookForward;
                         tRight = combatTargeter->lookRight;
+                    }
+                    break;
+                case MoveInputBasedOnType.Rotation:
+                    if (frame.Unsafe.TryGetPointer<Transform3D>(entityRef, out var transform))
+                    {
+                        tForward = transform->Forward;
+                        tRight = transform->Right;
                     }
                     break;
             }
