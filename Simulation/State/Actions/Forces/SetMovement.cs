@@ -16,7 +16,8 @@ namespace HnSF.core.state.actions
             lookDirection,
             slope,
             custom,
-            StickBuffered,
+            bufferedStickMovement,
+            lookDirectionWithCustomInput
         }
         
         public enum ModifyType
@@ -30,7 +31,7 @@ namespace HnSF.core.state.actions
         public HNSFParamFPVector2 speedParam;
         public bool normalizeInput;
         public HNSFParamFPVector3 customInput;
-        public int stickBufferedBuffer = 3;
+        public short stickBufferedBuffer = 0;
         public bool asFlight = false;
 
         public bool multiplyByCurve;
@@ -52,13 +53,15 @@ namespace HnSF.core.state.actions
             
             for (int i = 0; i < inputSources.Length; i++)
             {
+                ActorInputCamera* bufferCam;
+                ActorInputBufferMovement* bufferMovement;
                 switch (inputSources[i])
                 {
                     case InputSourceType.slope:
                         break;
                     case InputSourceType.stick:
-                        var bufferCam = frame.Unsafe.GetPointer<ActorInputCamera>(targetEntityRef);
-                        var bufferMovement = frame.Unsafe.GetPointer<ActorInputBufferMovement>(targetEntityRef);
+                        bufferCam = frame.Unsafe.GetPointer<ActorInputCamera>(targetEntityRef);
+                        bufferMovement = frame.Unsafe.GetPointer<ActorInputBufferMovement>(targetEntityRef);
                         input = bufferCam->GetMovementVector(0, bufferMovement->GetMovement(0), !asFlight);
                         break;
                     case InputSourceType.lookDirection:
@@ -67,8 +70,14 @@ namespace HnSF.core.state.actions
                     case InputSourceType.custom:
                         input = customInput.Resolve(frame, targetEntityRef, ref targetStateContext);
                         break;
-                    case InputSourceType.StickBuffered:
-                        //input = InputHelper(frame, inputs, stickBufferedBuffer, 0, checkX: true, checkY: true);
+                    case InputSourceType.bufferedStickMovement:
+                        bufferCam = frame.Unsafe.GetPointer<ActorInputCamera>(targetEntityRef);
+                        bufferMovement = frame.Unsafe.GetPointer<ActorInputBufferMovement>(targetEntityRef);
+                        input = bufferCam->GetMovementVector(0, bufferMovement->GetFirstMovementInput(stickBufferedBuffer, FP.SmallestNonZero), !asFlight);
+                        break;
+                    case InputSourceType.lookDirectionWithCustomInput:
+                        var ci = customInput.Resolve(frame, targetEntityRef, ref targetStateContext);
+                        input = (transform->Forward * ci.Z) + (transform->Right * ci.X) + (transform->Up * ci.Y);
                         break;
                 }
                 

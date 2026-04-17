@@ -15,7 +15,8 @@ namespace HnSF.core.state.functions
         }
 
         public SourceType[] eulerSource = Array.Empty<SourceType>();
-        public HNSFParamFPVector3 inputCustom;
+        public bool useCustom;
+        public HNSFParamFPVector2 inputCustom;
         
         public override FPVector3 Execute(Frame frame, EntityRef entity, ref HNSFStateContext stateContext)
         {
@@ -26,17 +27,19 @@ namespace HnSF.core.state.functions
                 switch (pt)
                 {
                     case SourceType.Self:
-                        dir = GetInput(frame, entity);
+                        dir = GetInput(frame, entity, ref stateContext);
                         break;
                     case SourceType.SoftTarget:
                         if (!frame.Unsafe.TryGetPointer<CombatTargeter>(entity, out var selfCombatTargeterB)
                             || !frame.Exists(selfCombatTargeterB->softTarget)) continue;
-                        dir = GetInput(frame, selfCombatTargeterB->softTarget);
+                        var stContext = new HNSFStateContext(frame, selfCombatTargeterB->softTarget);
+                        dir = GetInput(frame, selfCombatTargeterB->softTarget, ref stContext);
                         break;
                     case SourceType.HardTarget:
                         if (!frame.Unsafe.TryGetPointer<CombatTargeter>(entity, out var selfCombatTargeterHard)
                             || !frame.Exists(selfCombatTargeterHard->targetEntity)) continue;
-                        dir = GetInput(frame, selfCombatTargeterHard->targetEntity);
+                        var htContext = new HNSFStateContext(frame, selfCombatTargeterHard->targetEntity);
+                        dir = GetInput(frame, selfCombatTargeterHard->targetEntity, ref htContext);
                         break;
                 }
                 if(dir != FPVector3.Zero) break;
@@ -45,12 +48,16 @@ namespace HnSF.core.state.functions
             return dir;
         }
 
-        public FPVector3 GetInput(Frame frame, EntityRef entityRef)
+        public FPVector3 GetInput(Frame frame, EntityRef entityRef, ref HNSFStateContext stateContext)
         {
             if(!frame.Unsafe.TryGetPointer<ActorInputBufferMovement>(entityRef, out var bufferMovement)
                || !frame.Unsafe.TryGetPointer<ActorInputCamera>(entityRef, out var inputCamera)) return FPVector3.Zero;
 
-            var modiInput = bufferMovement->GetMovement(0);
+            FPVector2 modiInput;
+            if (useCustom)
+                modiInput = inputCustom.Resolve(frame, entityRef, ref stateContext);
+            else
+                modiInput = bufferMovement->GetMovement(0);
             return InputHelper.GetMovementVector(inputCamera->GetForward(0), inputCamera->GetRight(0), modiInput.X, modiInput.Y);
         }
 
@@ -62,6 +69,7 @@ namespace HnSF.core.state.functions
         public override HNSFStateFunction CopyTo(HNSFStateFunction target)
         {
             var t = target as GetMovementVectorFromInput;
+            t.inputCustom = inputCustom.Clone() as HNSFParamFPVector2;
             return base.CopyTo(target);
         }
     }

@@ -21,7 +21,9 @@ namespace HnSF.core.state.actions
         public enum StickCameraSourceType
         {
             Camera,
-            Wall
+            Wall,
+            HardTarget,
+            Raw
         }
 
         public enum SurfaceType
@@ -60,15 +62,29 @@ namespace HnSF.core.state.actions
                 switch (inputSources[i])
                 {
                     case InputSourceType.stick:
-                        if (stickCameraSource == StickCameraSourceType.Camera)
+                        switch (stickCameraSource)
                         {
-                            input = bufferCam->GetMovementVector(0, bufferMovement->GetMovement(0), false);
-                        }else if (stickCameraSource == StickCameraSourceType.Wall)
-                        {
-                            if (gotWallInfo)
-                            {
-                                input = bufferCam->GetMovementVector(0, bufferMovement->GetMovement(0), true);
-                            }
+                            case StickCameraSourceType.Camera:
+                                input = bufferCam->GetMovementVector(0, bufferMovement->GetMovement(0), false);
+                                break;
+                            case StickCameraSourceType.Wall:
+                                if (gotWallInfo)
+                                {
+                                    input = bufferCam->GetMovementVector(0, bufferMovement->GetMovement(0), true);
+                                }
+                                break;
+                            case StickCameraSourceType.HardTarget:
+                                if (frame.Unsafe.TryGetPointer<CombatTargeter>(entity, out var combatTargeter)
+                                    && combatTargeter->hardLocked)
+                                {
+                                    input = bufferMovement->GetMovement(0).XOY;
+                                    input = (combatTargeter->lookForward.XOZ.Normalized * input.Z) +
+                                            (combatTargeter->lookRight.XOZ.Normalized * input.X);
+                                }
+                                break;
+                            case StickCameraSourceType.Raw:
+                                input = bufferMovement->GetMovement(0).XOY;
+                                break;
                         }
                         break;
                     case InputSourceType.rotation:
