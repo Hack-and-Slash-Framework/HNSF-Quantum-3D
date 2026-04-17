@@ -14,7 +14,14 @@ namespace HnSF.core.state.functions
             HardTarget,
         }
 
+        public enum MoveInputBasedOnType
+        {
+            Camera,
+            HardTarget
+        }
+
         public SourceType[] eulerSource = Array.Empty<SourceType>();
+        public MoveInputBasedOnType inputBasedOn = MoveInputBasedOnType.Camera;
         public bool useCustom;
         public HNSFParamFPVector2 inputCustom;
         
@@ -50,15 +57,35 @@ namespace HnSF.core.state.functions
 
         public FPVector3 GetInput(Frame frame, EntityRef entityRef, ref HNSFStateContext stateContext)
         {
-            if(!frame.Unsafe.TryGetPointer<ActorInputBufferMovement>(entityRef, out var bufferMovement)
-               || !frame.Unsafe.TryGetPointer<ActorInputCamera>(entityRef, out var inputCamera)) return FPVector3.Zero;
+            if(!frame.Unsafe.TryGetPointer<ActorInputBufferMovement>(entityRef, out var bufferMovement)) return FPVector3.Zero;
 
             FPVector2 modiInput;
             if (useCustom)
                 modiInput = inputCustom.Resolve(frame, entityRef, ref stateContext);
             else
                 modiInput = bufferMovement->GetMovement(0);
-            return InputHelper.GetMovementVector(inputCamera->GetForward(0), inputCamera->GetRight(0), modiInput.X, modiInput.Y);
+
+            FPVector3 tForward = FPVector3.Zero;
+            FPVector3 tRight = FPVector3.Zero;
+            switch (inputBasedOn)
+            {
+                case MoveInputBasedOnType.Camera:
+                    if (frame.Unsafe.TryGetPointer<ActorInputCamera>(entityRef, out var inputCamera))
+                    {
+                        tForward = inputCamera->GetForward(0);
+                        tRight = inputCamera->GetRight(0);
+                    }
+                    break;
+                case MoveInputBasedOnType.HardTarget:
+                    if (frame.Unsafe.TryGetPointer<CombatTargeter>(entityRef, out var combatTargeter))
+                    {
+                        tForward = combatTargeter->lookForward;
+                        tRight = combatTargeter->lookRight;
+                    }
+                    break;
+            }
+            
+            return InputHelper.GetMovementVector(tForward, tRight, modiInput.X, modiInput.Y);
         }
 
         public override HNSFStateFunction Copy()
