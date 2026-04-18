@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.13.0...v1.14.0) (2026-04-18)
+
+
+### Features
+
+* ApplyGravity action multiplier ([6e77551](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/6e775518bb24648c97872a1a50b220ac51ad5645))
+
 # [1.13.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.12.0...v1.13.0) (2026-04-17)
 
 
