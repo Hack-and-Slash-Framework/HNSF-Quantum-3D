@@ -9,6 +9,7 @@ namespace HnSF.core.state.actions
     public unsafe partial class ApplyGravity : HNSFStateAction
     {
 
+        public HNSFParamFP multi = FP._1;
         public HNSFParamFP gravity;
         public HNSFParamFP maxFallSpeed;
         public bool applyCurve;
@@ -23,7 +24,7 @@ namespace HnSF.core.state.actions
                 FPMath.MoveTowards(
                     physics->GetDynamicVelocityVerticalSpeedFP(frame, entity), 
                     -maxFallSpeed.Resolve(frame,entity, ref stateContext), 
-                    gravity.Resolve(frame, entity, ref stateContext) * frame.DeltaTime)
+                    gravity.Resolve(frame, entity, ref stateContext) * multi.Resolve(frame, entity, ref stateContext) * frame.DeltaTime)
             );
             return false;
         }
@@ -36,6 +37,7 @@ namespace HnSF.core.state.actions
         public override HNSFStateAction CopyTo(HNSFStateAction target)
         {
             var t = target as ApplyGravity;
+            t.multi = multi.Clone() as HNSFParamFP;
             t.gravity = gravity.Clone() as HNSFParamFP;
             t.maxFallSpeed = maxFallSpeed.Clone() as HNSFParamFP;
             t.applyCurve = applyCurve;
