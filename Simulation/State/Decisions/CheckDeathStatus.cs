@@ -35,6 +35,7 @@ namespace HnSF.core.state.decisions
         public override HNSFStateDecision CopyTo(HNSFStateDecision target)
         {
             var t = target as CheckDeathStatus;
+            t.checkStatus = checkStatus;
             return base.CopyTo(target);
         }
     }
