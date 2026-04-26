@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.0...v1.14.1) (2026-04-26)
+
+
+### Bug Fixes
+
+* Fixed HitForceData serializing ([02be39d](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/02be39dfd46b41051a8b4fc20ed7d8611fe8d640))
+
 # [1.14.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.13.0...v1.14.0) (2026-04-18)
 
 
