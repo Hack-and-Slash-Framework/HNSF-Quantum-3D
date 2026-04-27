@@ -1,3 +1,10 @@
+## [1.14.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.1...v1.14.2) (2026-04-27)
+
+
+### Bug Fixes
+
+* Fixes ([d9e39d9](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/d9e39d91686255ad1357dd5e8a45dccd33b1462a))
+
 ## [1.14.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.0...v1.14.1) (2026-04-26)
 
 
