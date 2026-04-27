@@ -6,7 +6,7 @@ using Quantum;
 namespace HnSF.core.state.actions
 {
     [Serializable]
-    [AddTypeMenu(menuName: "Fighter/Movement/Modify Forces")]
+    [AddTypeMenu(menuName: "Fighter/Movement/Move Towards Force")]
     public unsafe partial class MoveTowardsForce : HNSFStateAction
     {
         public enum InputSourceType

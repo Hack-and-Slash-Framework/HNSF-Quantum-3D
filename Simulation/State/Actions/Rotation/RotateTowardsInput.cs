@@ -129,7 +129,7 @@ namespace HnSF.core.state.actions
             t.throweeId = throweeId;
             t.rotateTowards = new RotateTowardsType[rotateTowards.Length];
             Array.Copy(rotateTowards, t.rotateTowards, rotateTowards.Length);
-            t.rotationSpeedParam = rotationSpeedParam;
+            t.rotationSpeedParam = rotationSpeedParam.Clone() as HNSFParamFP;
             t.reverse = reverse;
             t.useY = useY;
             return base.CopyTo(target);
