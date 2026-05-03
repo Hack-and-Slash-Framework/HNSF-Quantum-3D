@@ -1,3 +1,10 @@
+## [1.14.4](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.3...v1.14.4) (2026-05-03)
+
+
+### Bug Fixes
+
+* Fix RotateTowardsInput copy ([5189533](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/51895330fafe44d6e649ec680aa9c0bed07883b7))
+
 ## [1.14.3](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.2...v1.14.3) (2026-05-03)
 
 
