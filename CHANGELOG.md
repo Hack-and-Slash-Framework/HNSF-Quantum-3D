@@ -1,3 +1,10 @@
+## [1.14.3](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.2...v1.14.3) (2026-05-03)
+
+
+### Bug Fixes
+
+* Fix VisualEffectRequest cloning ([4b9214c](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/4b9214c30476149373c32823e7009996095e082e))
+
 ## [1.14.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.1...v1.14.2) (2026-04-27)
 
 
