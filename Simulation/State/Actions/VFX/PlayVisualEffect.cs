@@ -38,7 +38,7 @@ namespace HnSF.core.state.actions
         public override HNSFStateAction CopyTo(HNSFStateAction target)
         {
             var t = target as PlayVisualEffect;
-            t.visualEffectRequestParam = visualEffectRequestParam;
+            t.visualEffectRequestParam = visualEffectRequestParam.Clone();
             t.atClosestBodyPosition = atClosestBodyPosition;
             return base.CopyTo(target);
         }
