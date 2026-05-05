@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.4...v1.15.0) (2026-05-05)
+
+
+### Features
+
+* State preview settings ([af51ab1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/af51ab12ec66ebd75e61c1de1b84c0e83b6351a0))
+
 ## [1.14.4](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.3...v1.14.4) (2026-05-03)
 
 
