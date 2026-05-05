@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.15.0...v1.15.1) (2026-05-05)
+
+
+### Bug Fixes
+
+* Fix EventReceiver protection levels ([66f1058](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/66f10584746c92e04fccf2c4b04094b08d34760d))
+
 # [1.15.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.14.4...v1.15.0) (2026-05-05)
 
 
