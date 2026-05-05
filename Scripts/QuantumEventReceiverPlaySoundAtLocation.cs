@@ -19,7 +19,7 @@ namespace HnSF
 
         public Dictionary<AudioSourceConfig, ObjectPool<GameAudioSource>> audioSourcePools = new();
 
-        public void Initialize()
+        public virtual void Initialize()
         {
             _disposableCallbacks.Add(
                 QuantumCallback.SubscribeManual((CallbackEventCanceled c) => WhenEventCanceled(c)));
@@ -28,7 +28,7 @@ namespace HnSF
             _disposableCallbacks.Add(QuantumEvent.SubscribeManual((EventPlaySoundAtLocation e) => PlaySoundEvent(e)));
         }
 
-        public void Teardown()
+        public virtual void Teardown()
         {
             for (int i = 0; i < _disposableCallbacks.Count; i++)
             {
@@ -53,7 +53,7 @@ namespace HnSF
             }
         }
 
-        private void PlaySoundEvent(EventPlaySoundAtLocation callback)
+        protected virtual void PlaySoundEvent(EventPlaySoundAtLocation callback)
         {
             if (viewUpdater == null)
                 viewUpdater = GameObject.FindAnyObjectByType<QuantumEntityViewUpdater>();
@@ -113,7 +113,7 @@ namespace HnSF
             if (aso) _unconfirmedSounds.Add(eventKey, (ownerSoundManager, aso));
         }
 
-        private GameAudioSource GetPooledAudioSource(AudioSourceConfig sourceConfigAsset)
+        protected virtual GameAudioSource GetPooledAudioSource(AudioSourceConfig sourceConfigAsset)
         {
             if (sourceConfigAsset == null) return null;
 

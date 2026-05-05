@@ -13,7 +13,7 @@ namespace HnSF
 
         private Dictionary<EventKey, BattleActorViewHitstopShake> _unconfirmedShakes = new();
 
-        public void Initialize()
+        public virtual void Initialize()
         {
             _disposableCallbacks.Add(
                 QuantumCallback.SubscribeManual((CallbackEventCanceled c) => WhenEventCanceled(c)));
@@ -23,7 +23,7 @@ namespace HnSF
                 DoHitstopShake(e)));
         }
 
-        public void Breakdown()
+        public virtual void Breakdown()
         {
             for (int i = 0; i < _disposableCallbacks.Count; i++)
             {
@@ -33,7 +33,7 @@ namespace HnSF
             _disposableCallbacks.Clear();
         }
 
-        private void WhenEventConfirmed(CallbackEventConfirmed callback)
+        protected virtual void WhenEventConfirmed(CallbackEventConfirmed callback)
         {
             if (_unconfirmedShakes.ContainsKey(callback.EventKey))
             {
@@ -41,7 +41,7 @@ namespace HnSF
             }
         }
 
-        private void WhenEventCanceled(CallbackEventCanceled callback)
+        protected virtual void WhenEventCanceled(CallbackEventCanceled callback)
         {
             if (_unconfirmedShakes.ContainsKey(callback.EventKey))
             {
@@ -50,7 +50,7 @@ namespace HnSF
             }
         }
 
-        private void DoHitstopShake(EventCauseHitstopShake callback)
+        protected virtual void DoHitstopShake(EventCauseHitstopShake callback)
         {
             if (viewUpdater == null) viewUpdater = GameObject.FindAnyObjectByType<QuantumEntityViewUpdater>();
 
