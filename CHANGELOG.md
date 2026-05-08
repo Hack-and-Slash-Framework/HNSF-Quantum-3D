@@ -1,3 +1,10 @@
+## [1.15.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.15.1...v1.15.2) (2026-05-08)
+
+
+### Bug Fixes
+
+* Remove sample files ([2edcac3](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/2edcac351c86f078701fe53d6f986ff1f746068c))
+
 ## [1.15.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.15.0...v1.15.1) (2026-05-05)
 
 
