@@ -1,0 +1,3 @@
+component Scale3D{
+    FPVector3 value;
+}
