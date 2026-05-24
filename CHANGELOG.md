@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.15.2...v1.16.0) (2026-05-24)
+
+
+### Features
+
+* Improved sound management ([d4c5806](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/d4c5806935ceabe78c1f71e0ff8f78e6967f9b6c))
+
 ## [1.15.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.15.1...v1.15.2) (2026-05-08)
 
 
