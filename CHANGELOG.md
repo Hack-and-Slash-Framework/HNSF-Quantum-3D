@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.16.0...v1.16.1) (2026-05-31)
+
+
+### Bug Fixes
+
+* Fix ForceAngleTargetAdjustment ([515f4b2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/515f4b2d084ed6a030d7be94af913ac4c5690d9c))
+
 # [1.16.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.15.2...v1.16.0) (2026-05-24)
 
 
