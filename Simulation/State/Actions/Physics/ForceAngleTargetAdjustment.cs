@@ -13,15 +13,14 @@ namespace HnSF.core.state.actions
         public override bool ExecuteAction(Frame frame, EntityRef entity, FP rangePercent,
             ref HNSFStateContext stateContext)
         {
-            /*
             BattleActorPhysics* physics = frame.Unsafe.GetPointer<BattleActorPhysics>(entity);
             Transform3D* transform = frame.Unsafe.GetPointer<Transform3D>(entity);
-            var inputs = frame.Unsafe.GetPointer<ActorInputBuffer>(entity);
+            var inputMovement = frame.Unsafe.GetPointer<ActorInputBufferMovement>(entity);
             var targeter = frame.Unsafe.GetPointer<CombatTargeter>(entity);
 
             EntityRef targetEntity = EntityRef.None;
 
-            if (targeter->hardLocked == false && inputs->moveInput.SqrMagnitude <= 0 &&
+            if (targeter->hardLocked == false && inputMovement->GetMovement(0).SqrMagnitude <= 0 &&
                 frame.Exists(targeter->softTarget))
             {
                 targetEntity = targeter->softTarget;
@@ -42,7 +41,6 @@ namespace HnSF.core.state.actions
             var mag = force.Magnitude;
             
             physics->SetOverallVelocity(frame, entity, wantedDir * mag);
-            */
             return false;
         }
 
