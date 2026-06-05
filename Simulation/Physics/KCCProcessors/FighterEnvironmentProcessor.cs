@@ -23,6 +23,8 @@ namespace Quantum
 		public FP MaxGroundAngle = 60;
 		[KCCTooltip("Dynamic velocity is decelerated by actual dynamic speed multiplied by this. The faster KCC moves, the more deceleration is applied.")]
 		public FP DynamicGroundFriction = 20;
+		[KCCTooltip("Gravity applied only while the KCC is partially snapped to ground.")]
+		public FPVector3 GroundSnapGravity = new FPVector3(0, -20, 0);
 
 		[KCCHeader("Air")]
 		[KCCTooltip("Dynamic velocity is decelerated by actual dynamic speed multiplied by this. The faster KCC moves, the more deceleration is applied.")]
@@ -48,7 +50,7 @@ namespace Quantum
 				prepareDataProcessor.PrepareData(context, prepareDataProcessorInfo);
 			}
 			
-			SetDynamicVelocity(context, ref context.KCC->Data, JumpMultiplier, DynamicGroundFriction, DynamicAirFriction, ExternalCollisionStrength);
+			SetDynamicVelocity(context, ref context.KCC->Data, JumpMultiplier, DynamicGroundFriction, DynamicAirFriction, ExternalCollisionStrength, GroundSnapGravity);
 			SetKinematicVelocity(context, ref context.KCC->Data, KinematicMaxSpeed);
 		}
 
@@ -74,10 +76,10 @@ namespace Quantum
 
 			if (data.IsGrounded == true)
 			{
-				if (data.WasGrounded == true && data.IsSnappingToGround == false && data.DynamicVelocity.Y < FP._0 && IsAlmostZero(new FPVector3(data.DynamicVelocity.X, FP._0, data.DynamicVelocity.Z), FP.EN2) == true)
+				if (data.WasGrounded == true && data.IsSnappingToGround == false && data.GroundDistance <= FP.EN3 && data.DynamicVelocity.Y < FP._0)
 				{
-					// Reset dynamic velocity Y axis while grounded (to not accumulate gravity indefinitely and clamp to precise zero).
-					//data.DynamicVelocity.Y = FP._0;
+					// Reset downward dynamic velocity while stably grounded so it does not leak into the next air frame.
+					data.DynamicVelocity.Y = FP._0;
 				}
 
 				if (data.WasGrounded == false)
@@ -113,10 +115,15 @@ namespace Quantum
 			context.KCC->Data = data;
 		}
 
-		public static void SetDynamicVelocity(KCCContext context, ref KCCData data, FP jumpMultiplier, FP groundFriction, FP airFriction, FP externalCollisionStrength)
+		public static void SetDynamicVelocity(KCCContext context, ref KCCData data, FP jumpMultiplier, FP groundFriction, FP airFriction, FP externalCollisionStrength, FPVector3 GroundSnapGravity)
 		{
 			FP        deltaTime       = context.Frame.DeltaTime;
 			FPVector3 dynamicVelocity = data.DynamicVelocity;
+
+			if (data.IsGrounded == true && data.IsSteppingUp == false && (data.IsSnappingToGround == true || data.GroundDistance > FP.EN3))
+			{
+				dynamicVelocity += GroundSnapGravity * deltaTime;
+			}
 
 			if (data.JumpImpulse != default && jumpMultiplier > FP._0)
 			{
@@ -167,6 +174,11 @@ namespace Quantum
 				}
 			}
 
+			if (data.IsGrounded == true && data.IsSteppingUp == false && data.IsSnappingToGround == false && data.GroundDistance <= FP.EN3 && data.HasJumped == false && dynamicVelocity.Y < FP._0)
+			{
+				dynamicVelocity.Y = FP._0;
+			}
+
 			data.DynamicVelocity = dynamicVelocity;
 
 			data.JumpImpulse     = default;
@@ -178,8 +190,10 @@ namespace Quantum
 		public static void SetKinematicVelocity(KCCContext context, ref KCCData data, FP speed)
 		{
 			//data.KinematicDirection = new FPVector3(data.InputDirection.X, default, data.InputDirection.Z);
-			data.KinematicDirection = data.KinematicVelocity.SqrMagnitude > 0 ? data.KinematicVelocity.Normalized : FPVector3.Zero;
-
+			data.KinematicDirection = data.KinematicVelocity;
+			data.KinematicDirection.Y = default;
+			data.KinematicDirection = data.KinematicDirection.SqrMagnitude > 0 ? data.KinematicDirection.Normalized : FPVector3.Zero;
+			
 			//Draw.Sphere(data.BasePosition, FP._0_20, ColorRGBA.Black);
 			
 			//Draw.Ray(data.BasePosition, data.KinematicDirection * FP._4, ColorRGBA.Green);
@@ -236,7 +250,9 @@ namespace Quantum
 				if (IsAlmostZero(data.KinematicDirection, FP.EN2) == true)
 				{
 					// No kinematic direction
-					// Just apply friction (XYZ) and exit early.
+					// Clamp any stale vertical projection and exit early.
+					kinematicVelocity.Y = FP._0;
+					data.KinematicVelocity = kinematicVelocity;
 					return;
 				}
 			}
@@ -248,7 +264,8 @@ namespace Quantum
 				if (IsAlmostZero(data.KinematicDirection, FP.EN2) == true)
 				{
 					// No kinematic direction
-					// Just apply friction (XZ) and exit early.
+					// Just clear vertical kinematic velocity and exit early.
+					data.KinematicVelocity = kinematicVelocity;
 					return;
 				}
 			}
