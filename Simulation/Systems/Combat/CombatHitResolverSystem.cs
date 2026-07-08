@@ -255,13 +255,14 @@ namespace HnSF.core.systems
                 ref pairInfo);
 
             // Defender resolving.
+            EventReceiverHelper.CallEvent(frame, defenderEntityRef, (int)EventReceiverTyping.DefenderPreHitReactionResolve);
             if (frame.TryFindAsset(defenderBoxCombatant->defendingResolveAction, out var defendingResolveAction))
             {
                 defendingResolveAction.Resolve(ref pairInfo);
             }
-
             FillLastHitByInfoFromHitReactionData(lastHitByInfo, ref pairInfo);
-
+            
+            EventReceiverHelper.CallEvent(frame, defenderEntityRef, (int)EventReceiverTyping.DefenderPostHitReactionResolve);
             frame.Signals.CombatboxResolvingGotHitReactionResult(&pairInfo);
 
             // Fill last hit with info.
@@ -278,6 +279,8 @@ namespace HnSF.core.systems
                 attackerResolveAction.Resolve(ref pairInfo);
             }
 
+            EventReceiverHelper.CallEvent(frame, attackerEntityRef, (int)EventReceiverTyping.AttackerReceivedHitReaction);
+            
             return WasActorHurt(frame, ref pairInfo);
         }
         
