@@ -82,25 +82,26 @@ namespace HnSF.core.systems
 
         protected virtual void ResolveHitPair(Frame f, KeyValuePair<EntityRef, List<HitboxCombatPair>> hitboxCombatPair)
         {
-            if(defendersAlreadyHitThisFrame.Contains(hitboxCombatPair.Key)) return;
+            if (defendersAlreadyHitThisFrame.Contains(hitboxCombatPair.Key)) return;
 
             bool shouldMarkEntityAsAlreadyHit = false;
             foreach (var entry in hitboxCombatPair.Value)
             {
-                if(entry.ignore) continue;
-                    
+                if (entry.ignore) continue;
+
                 shouldMarkEntityAsAlreadyHit = AttemptHurtActor(
                     frame: f,
+                    attackerEntityRef: entry.attacker,
                     defenderEntityRef: hitboxCombatPair.Key,
-                    combatPair: entry,
                     attackerHitbox: f.Get<Hitbox>(entry.attackerHitbox),
                     attackerHitboxPos: f.Unsafe.GetPointer<Transform3D>(entry.attackerHitbox)->Position,
                     attackerState: HNSFStateHelper.GetEntityState(f, entry.attacker),
-                    attackerStateId: HNSFStateHelper.GetEntityStateId(f, entry.attacker));
+                    attackerStateId: HNSFStateHelper.GetEntityStateId(f, entry.attacker),
+                    defenderHurtbox: f.Get<Hurtbox>(entry.defenderHitboxOrHurtbox));
 
                 if (shouldMarkEntityAsAlreadyHit) break;
             }
-                
+
             if (shouldMarkEntityAsAlreadyHit) defendersAlreadyHitThisFrame.Add(hitboxCombatPair.Key);
         }
 
@@ -186,7 +187,7 @@ namespace HnSF.core.systems
             Throwbox attackerThrowbox, FPVector3 attackerThrowboxPos)
         {
             if (f.Has<IsBeingThrown>(combatPair.entityB)) return false;
-            
+
             if (!f.Unsafe.TryGetPointer<BoxCombatant>(combatPair.entityB, out var defenderBoxCombatant)
                 || !f.Unsafe.TryGetPointer<BoxCombatant>(attackerThrowbox.owner, out var attackerBoxCombatant)
                 || !f.Unsafe.TryGetPointer<Hurtbox>(combatPair.entityBHurtbox, out var defenderHurtbox)
@@ -194,21 +195,21 @@ namespace HnSF.core.systems
 
             if (f.TryFindAsset<HurtboxInfo>(defenderHurtbox->hurtboxInfoRef, out var hurtboxInfo) &&
                 hurtboxInfo.armor) return false;
-            
-            if(BoxCombatantHelper.HasTouchedEntity(f, attackerBoxCombatant, combatPair.entityB))
+
+            if (BoxCombatantHelper.HasTouchedEntity(f, attackerBoxCombatant, combatPair.entityB))
             {
                 return false;
             }
-            
+
             // Check Conditions.
             HNSFStateContext defenderContext = new HNSFStateContext(f, combatPair.entityB);
-            
+
             foreach (var cRef in throwInfo.conditions)
             {
                 if (cRef.Decide(f, combatPair.entityB, ref defenderContext)) continue;
                 return false;
             }
-            
+
             f.AddOrGet<IsThrowing>(combatPair.entityA, out var isThrowing);
             var throweesDict = f.ResolveDictionary(isThrowing->throwees);
             bool didAdd = throweesDict.TryAdd(throwInfo.throweeId, combatPair.entityB);
@@ -218,62 +219,72 @@ namespace HnSF.core.systems
                 if (throweesDict.Count == 0) f.Remove<IsThrowing>(combatPair.entityA);
                 return false;
             }
-            
-            var isInThrow = new IsBeingThrown(){ thrower = combatPair.entityA };
+
+            var isInThrow = new IsBeingThrown() { thrower = combatPair.entityA };
             f.Add(combatPair.entityB, isInThrow);
 
             BoxCombatantHelper.MarkEntityAsTouched(f, attackerBoxCombatant, combatPair.entityB, -1);
             return true;
         }
 
-        protected virtual bool AttemptHurtActor(Frame frame, EntityRef defenderEntityRef, HitboxCombatPair combatPair,
-            Hitbox attackerHitbox, FPVector3 attackerHitboxPos, AssetRef<HNSFState> attackerState, uint attackerStateId)
+        protected virtual bool AttemptHurtActor(Frame frame, EntityRef attackerEntityRef, EntityRef defenderEntityRef,
+            Hitbox attackerHitbox, FPVector3 attackerHitboxPos, Hurtbox defenderHurtbox, AssetRef<HNSFState> attackerState, uint attackerStateId)
         {
-            if (!frame.Unsafe.TryGetPointer<BoxCombatant>(attackerHitbox.owner, out var attackerBoxCombatant))
+            if (!frame.Unsafe.TryGetPointer<BoxCombatant>(attackerEntityRef, out var attackerBoxCombatant))
                 return false;
 
-            if (BoxCombatantHelper.HasTouchedEntity(frame, attackerBoxCombatant, defenderEntityRef)) 
+            if (BoxCombatantHelper.HasTouchedEntity(frame, attackerBoxCombatant, defenderEntityRef))
                 return false;
-            
-            if (!frame.Unsafe.TryGetPointer<BoxCombatant>(defenderEntityRef, out var defenderBoxCombatant)
-                || !frame.Unsafe.TryGetPointer<CombatTeam>(attackerHitbox.owner, out var attackerTeam)
-                || !frame.TryFindAsset<HNSFStateFunctionExternal>(defenderBoxCombatant->whenHitReactionFunction.Id, out var hitReactionFunction)
-                || !frame.Unsafe.TryGetPointer<Hurtbox>(combatPair.defenderHitboxOrHurtbox, out var defenderHurtbox)) return false;
-            
-            frame.AddOrGet(defenderEntityRef, out LastHitByInfo* lastHitByInfo);
-            
-            lastHitByInfo->lastHitOnFrame = frame.Number;
-            lastHitByInfo->hitByEntity = combatPair.attacker;
-            lastHitByInfo->hitByTeam = attackerTeam->value;
-            lastHitByInfo->hitByInfo = new AssetRef<HitInfoBase>(attackerHitbox.hitInfoRef);
-            lastHitByInfo->hitByEntityPosition = frame.Unsafe.GetPointer<Transform3D>(combatPair.attacker)->Position;
-            lastHitByInfo->hitByPosition = attackerHitboxPos;
-            lastHitByInfo->hitByHurtboxWasHit = defenderHurtbox->id;
-            lastHitByInfo->hitHurtboxInfo = defenderHurtbox->hurtboxInfoRef;
-            lastHitByInfo->hitByState = attackerState;
-            lastHitByInfo->hitByStateIdentifier = attackerStateId;
-            
-            HNSFStateContext defenderStateContext = new HNSFStateContext(frame, defenderEntityRef);
-            var hitReactionResultData = (hitReactionFunction.function as StateFunctionHitReactionResultData).Execute(frame, defenderEntityRef, ref defenderStateContext);
-            lastHitByInfo->lastReceivedHitReaction = hitReactionResultData;
 
-            frame.Signals.CombatboxResolvingGotHitReactionResult(&combatPair, &hitReactionResultData);
+            if (!frame.Unsafe.TryGetPointer<BoxCombatant>(defenderEntityRef, out var defenderBoxCombatant))
+                return false;
 
-            // ATTACKER
-            frame.AddOrGet(combatPair.attacker, out LastHitWithInfo* lastHitWithInfo);
-            lastHitWithInfo->data.hitInfoData->lastHitEntity = defenderEntityRef;
-            BoxCombatantHelper.MarkEntityAsTouched(frame, attackerBoxCombatant, defenderEntityRef, attackerHitbox.id);
-            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = hitReactionResultData;
-            lastHitWithInfo->data.hitInfoData->hitWithInfo = new AssetRef<HitInfoBase>(attackerHitbox.hitInfoRef);
-
-            if (frame.TryFindAsset<HNSFStateActionExternal>(attackerBoxCombatant->whenGotHitReactionAction.Id,
-                    out var whenGotHitReactionAction))
+            var pairInfo = new HitResolvePairInfo()
             {
-                defenderStateContext = new HNSFStateContext(frame, combatPair.attacker);
-                whenGotHitReactionAction.action.ExecuteAction(frame, combatPair.attacker, 0, ref defenderStateContext);
+                Frame = frame,
+                AttackerEntityRef = attackerEntityRef,
+                DefenderEntityRef = defenderEntityRef,
+                DefenderHitResultData = default,
+                attackerHitbox = &attackerHitbox,
+                defenderHurtbox = &defenderHurtbox
+            };
+
+            // Fill last hit by info.
+            frame.AddOrGet(defenderEntityRef, out LastHitByInfo* lastHitByInfo);
+            FillLastHitByInfo(lastHitByInfo, &attackerHitbox, attackerHitboxPos, attackerState, attackerStateId,
+                ref pairInfo);
+
+            // Defender resolving.
+            if (frame.TryFindAsset(defenderBoxCombatant->defendingResolveAction, out var defendingResolveAction))
+            {
+                defendingResolveAction.Resolve(ref pairInfo);
             }
-            
-            switch (hitReactionResultData.hitReaction)
+
+            FillLastHitByInfoFromHitReactionData(lastHitByInfo, ref pairInfo);
+
+            frame.Signals.CombatboxResolvingGotHitReactionResult(&pairInfo);
+
+            // Fill last hit with info.
+            frame.AddOrGet(attackerEntityRef, out LastHitWithInfo* lastHitWithInfo);
+            FillLastHitWithInfo(lastHitWithInfo, &attackerHitbox, attackerHitboxPos, attackerState, attackerStateId,
+                ref pairInfo);
+            BoxCombatantHelper.MarkEntityAsTouched(frame, attackerBoxCombatant, defenderEntityRef, attackerHitbox.id);
+            lastHitWithInfo->data.hitInfoData->hitWithInfo = new AssetRef<HitInfoBase>(attackerHitbox.hitInfoRef);
+            FillLastHitWithInfoFromHitReactionData(lastHitWithInfo, ref pairInfo);
+
+            // Attacker resolving.
+            if (frame.TryFindAsset(attackerBoxCombatant->attackingResolveAction, out var attackerResolveAction))
+            {
+                attackerResolveAction.Resolve(ref pairInfo);
+            }
+
+            return WasActorHurt(frame, ref pairInfo);
+        }
+        
+        protected virtual bool WasActorHurt(Frame frame, ref HitResolvePairInfo resolvePairInfo)
+        {
+            var react = (StandardHitReactions)resolvePairInfo.DefenderHitResultData.hitReaction;
+            switch (react)
             {
                 case StandardHitReactions.Hit:
                     return true;
@@ -288,48 +299,52 @@ namespace HnSF.core.systems
             }
         }
 
-        public static bool DirectDamage(Frame frame, EntityRef attacker, EntityRef defender, AssetRef<HitInfoBase> hitInfoRef,
-            int hitboxId = -1, int hitHurtboxId = -1, bool checkForStateChange = true, AssetRef<HNSFState> hitByState = default,
-            uint hitByStateIdentifier = 0)
+        protected virtual void FillLastHitWithInfo(LastHitWithInfo* lastHitWithInfo, Hitbox* hitbox, FPVector3 attackerHitboxPos,
+            AssetRef<HNSFState> attackerState, uint attackerStateId, ref HitResolvePairInfo pairInfo)
         {
-            if (!frame.Unsafe.TryGetPointer<BoxCombatant>(defender, out var defenderBoxCombatant)
-                || !frame.Unsafe.TryGetPointer<BoxCombatant>(attacker, out var attackerBoxCombatant)
-                || !frame.Unsafe.TryGetPointer<CombatTeam>(attacker, out var attackerTeam)
-                || !frame.TryFindAsset<HNSFStateFunctionExternal>(defenderBoxCombatant->whenHitReactionFunction.Id, out var hitReactionFunction)) return false;
-            
-            frame.AddOrGet(defender, out LastHitByInfo* lastHitByInfo);
-            
+            lastHitWithInfo->data.hitInfoData->lastHitEntity = pairInfo.DefenderEntityRef;
+        }
+        
+        protected virtual void FillLastHitByInfo(LastHitByInfo* lastHitByInfo, Hitbox* attackerHitbox,
+            FPVector3 attackerHitboxPos, AssetRef<HNSFState> attackerState, uint attackerStateId, ref HitResolvePairInfo pairInfo)
+        {
+            var frame = pairInfo.Frame;
+
             lastHitByInfo->lastHitOnFrame = frame.Number;
-            lastHitByInfo->hitByEntity = attacker;
-            lastHitByInfo->hitByTeam = attackerTeam->value;
-            lastHitByInfo->hitByInfo = hitInfoRef;
-            lastHitByInfo->hitByEntityPosition = frame.Unsafe.GetPointer<Transform3D>(attacker)->Position;
-            lastHitByInfo->hitByPosition = lastHitByInfo->hitByEntityPosition;
-            lastHitByInfo->hitByHurtboxWasHit = hitHurtboxId;
-            lastHitByInfo->hitHurtboxInfo = default;
-            lastHitByInfo->hitByState = hitByState;
-            lastHitByInfo->hitByStateIdentifier = hitByStateIdentifier;
-            
-            HNSFStateContext defenderStateContext = new HNSFStateContext(frame, defender);
-            var hitReaction = (hitReactionFunction.function as StateFunctionHitReactionResultData).Execute(frame, defender, ref defenderStateContext);
-            lastHitByInfo->lastReceivedHitReaction = hitReaction;
-            
-            // ATTACKER
-            frame.AddOrGet(attacker, out LastHitWithInfo* lastHitWithInfo);
-            lastHitWithInfo->data.hitInfoData->lastHitEntity = defender;
-            BoxCombatantHelper.MarkEntityAsTouched(frame, attackerBoxCombatant, defender, hitboxId);
-            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction = hitReaction;
-            lastHitWithInfo->data.hitInfoData->hitWithInfo = hitInfoRef;
-
-            if (frame.TryFindAsset<HNSFStateActionExternal>(attackerBoxCombatant->whenGotHitReactionAction.Id,
-                    out var whenGotHitReactionAction))
+            lastHitByInfo->hitByEntity = pairInfo.AttackerEntityRef;
+            lastHitByInfo->hitByTeam =
+                frame.Unsafe.TryGetPointer<CombatTeam>(pairInfo.AttackerEntityRef, out var attackerTeam)
+                    ? attackerTeam->value
+                    : 0;
+            lastHitByInfo->hitByInfo = new AssetRef<HitInfoBase>(attackerHitbox->hitInfoRef);
+            lastHitByInfo->hitByEntityPosition = frame.Unsafe.GetPointer<Transform3D>(pairInfo.AttackerEntityRef)->Position;
+            lastHitByInfo->hitByPosition = attackerHitboxPos;
+            if (pairInfo.defenderHurtbox != null)
             {
-
-                defenderStateContext = new HNSFStateContext(frame, attacker);
-                whenGotHitReactionAction.action.ExecuteAction(frame, attacker, 0, ref defenderStateContext);
+                lastHitByInfo->hitByHurtboxWasHit = pairInfo.defenderHurtbox->id;
+                lastHitByInfo->hitHurtboxInfo = pairInfo.defenderHurtbox->hurtboxInfoRef;
+            }
+            else
+            {
+                lastHitByInfo->hitByHurtboxWasHit = 0;
+                lastHitByInfo->hitHurtboxInfo = default;
             }
 
-            return true;
+            lastHitByInfo->hitByState = attackerState;
+            lastHitByInfo->hitByStateIdentifier = attackerStateId;
+        }
+
+        protected virtual void FillLastHitByInfoFromHitReactionData(LastHitByInfo* lastHitByInfo,
+            ref HitResolvePairInfo resolvePairInfo)
+        {
+            lastHitByInfo->lastReceivedHitReaction = (int)resolvePairInfo.DefenderHitResultData.hitReaction;
+        }
+        
+        protected virtual void FillLastHitWithInfoFromHitReactionData(LastHitWithInfo* lastHitWithInfo,
+            ref HitResolvePairInfo resolvePairInfo)
+        {
+            lastHitWithInfo->data.hitInfoData->lastReceivedHitReaction =
+                (int)resolvePairInfo.DefenderHitResultData.hitReaction;
         }
     }
 }

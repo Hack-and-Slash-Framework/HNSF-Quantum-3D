@@ -10,7 +10,7 @@ component LastHitByInfo
     asset_ref<HitInfoBase> hitByInfo;
     uint hitByStateIdentifier;
     asset_ref<HnSF.core.state.HNSFState> hitByState;
-    HitReactionResultData lastReceivedHitReaction;
+    int lastReceivedHitReaction;
     int lastHitstopAmount;
     int lastHitstunAmount;
     int lastBlockstunAmount;

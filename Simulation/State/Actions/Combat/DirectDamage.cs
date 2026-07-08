@@ -10,23 +10,26 @@ namespace HnSF.core.state.actions
     {
         public AssetRef<HitInfoBase> hitInfo;
         public bool releaseThrowee;
+        public bool immediateStateChange;
         
         public override bool ExecuteAction(Frame frame, EntityRef entity, FP rangePercent,
             ref HNSFStateContext stateContext)
         {
-            var targetEntityRef = GetActionTargetEntityRef(frame, entity);
-            if (targetEntityRef == EntityRef.None) return false;
-            CombatHitResolverSystem.DirectDamage(
-                frame,
-                attacker: entity,
-                defender: targetEntityRef,
-                hitInfoRef: hitInfo);
-
-            if (releaseThrowee
-                && frame.Unsafe.TryGetPointer<IsBeingThrown>(targetEntityRef, out var ibt))
+            var defenderEntityRef = GetActionTargetEntityRef(frame, entity);
+            if (defenderEntityRef == EntityRef.None) return false;
+            
+            CombatDirectHitResolverSystem.directHits.Add(new DirectHitInfo()
             {
-                ibt->ReleaseFromThrow(frame, targetEntityRef);
-            }
+                attackerEntityRef = entity,
+                defenderEntityRef = defenderEntityRef,
+                hitInfoRef =  hitInfo,
+                releaseDefenderFromThrow = releaseThrowee,
+                hitboxId = -1,
+                hitHurtboxId = -1,
+                checkForStateChange = immediateStateChange,
+                hitByState = stateContext.workingState,
+                hitByStateIdentifier = stateContext.uniqueStateId
+            });
             return false;
         }
 
@@ -40,6 +43,7 @@ namespace HnSF.core.state.actions
             var t = target as DirectDamage;
             t.hitInfo = hitInfo;
             t.releaseThrowee = releaseThrowee;
+            t.immediateStateChange = immediateStateChange;
             return base.CopyTo(target);
         }
     }
