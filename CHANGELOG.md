@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.16.1...v1.17.0) (2026-07-08)
+
+
+### Features
+
+* Improved hit resolving logic ([3571742](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/3571742514e19ae5543722ada4be8395680e2822))
+
 ## [1.16.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.16.0...v1.16.1) (2026-05-31)
 
 
