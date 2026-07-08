@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.17.0...v1.18.0) (2026-07-08)
+
+
+### Features
+
+* Call hit resolve events on pair entities ([fbb9a1b](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/fbb9a1b1b656c11c94466ace1f46154df529eabe))
+
 # [1.17.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.16.1...v1.17.0) (2026-07-08)
 
 
