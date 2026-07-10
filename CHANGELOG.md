@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.18.0...v1.19.0) (2026-07-10)
+
+
+### Features
+
+* Improved animation baker ([2e93c98](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/2e93c98e39caf6f85353b0b27e3bb90f7768f5a3))
+
 # [1.18.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.17.0...v1.18.0) (2026-07-08)
 
 
