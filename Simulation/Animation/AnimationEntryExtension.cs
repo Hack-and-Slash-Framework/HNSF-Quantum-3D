@@ -2,35 +2,33 @@ using HnSF;
 
 namespace Quantum
 {
-    public partial class AnimationEntry : AssetObject
+    public partial class AnimationEntry
     {
-        public partial class AnimEntry
+        public partial class AnimWithTargetEntry
         {
-            public AssetRef<AnimationClipBakedData> bakedClipData;
+            public AssetRef<AnimationEntryBakedData> bakedAnimEntryData;
         }
 
-        public AssetRef<AnimationClipBakedData> GetAnimTargetBakedClipData(AssetRef<Tag> targetTag)
+        public AssetRef<AnimationEntryBakedData> GetAnimTargetBakedClipData(AssetRef<Tag> targetTag)
         {
             foreach (var v in animsTargets)
             {
                 if (v.animTargetTag != targetTag) continue;
-                return v.anims[0].bakedClipData;
+                return v.bakedAnimEntryData;
             }
-
             return default;
         }
 
         public bool TryGetAnimTargetBakedClipData(AssetRef<Tag> targetTag,
-            out AssetRef<AnimationClipBakedData> bakedClipData)
+            out AssetRef<AnimationEntryBakedData> bakedClipData)
         {
             bakedClipData = default;
             foreach (var v in animsTargets)
             {
                 if (v.animTargetTag != targetTag) continue;
-                bakedClipData = v.anims[0].bakedClipData;
+                bakedClipData = v.bakedAnimEntryData;
                 return true;
             }
-
             return false;
         }
     }

@@ -5,7 +5,7 @@ using Quantum;
 namespace HnSF
 {
     [System.Serializable]
-    public struct AnimationFrame
+    public struct AnimationFrame : IEquatable<AnimationFrame>
     {
         public int Id;
         public FP Time;
@@ -115,6 +115,22 @@ namespace HnSF
         public static string ToString(FPQuaternion q)
         {
             return $"{q.AsEuler.Z.AsFloat}, {q.AsEuler.Y.AsFloat}, {q.AsEuler.Z.AsFloat}";
+        }
+
+        public bool Equals(AnimationFrame other)
+        {
+            return Id == other.Id && Time.Equals(other.Time) && Position.Equals(other.Position) &&
+                   Rotation.AsEuler == other.Rotation.AsEuler && RotationY.Equals(other.RotationY);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is AnimationFrame other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Time, Position, Rotation, RotationY);
         }
     }
 }
