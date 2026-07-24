@@ -1,3 +1,10 @@
+# [1.20.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.19.0...v1.20.0) (2026-07-24)
+
+
+### Features
+
+* CauseScreenShake action ([2914744](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/2914744f8a108dfb674362ca6948e62abbef7369))
+
 # [1.19.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.18.0...v1.19.0) (2026-07-10)
 
 
