@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.21.0...v1.22.0) (2026-07-31)
+
+
+### Features
+
+* HTN functions ([09663cd](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/09663cd5cc39ef97a6f5b86b06d74e799ee9f9fa))
+
 # [1.21.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.20.0...v1.21.0) (2026-07-29)
 
 
