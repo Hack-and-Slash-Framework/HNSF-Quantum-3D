@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.22.0...v1.23.0) (2026-08-04)
+
+
+### Features
+
+* Move to weight & push resistance for entity pushing ([613f959](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/613f959839750085fdf8d3926df19882ea3e552f))
+
 # [1.22.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.21.0...v1.22.0) (2026-07-31)
 
 
