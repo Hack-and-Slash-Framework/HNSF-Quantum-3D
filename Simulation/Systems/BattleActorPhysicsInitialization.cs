@@ -6,8 +6,8 @@ namespace HnSF.core.systems
     {
         public void OnAdded(Frame f, EntityRef entity, BattleActorPhysics* component)
         {
-            component->pushStrength = 1;
-            component->selfPushStrength = 0;
+            component->weight = 100;
+            component->pushResistance = 1;
         }
     }
 }

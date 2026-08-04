@@ -152,6 +152,7 @@ namespace HnSF.core.systems
 
         protected virtual void ResolveCollisionPair(Frame f, KeyValuePair<EntityRef, CollisionCombatPair> collisionPair, CombatConfiguration combatConfig)
         {
+            /*
             if (!f.Unsafe.TryGetPointer<Transform3D>(collisionPair.Value.entityACollbox, out var entityACollTransform)
                 || !f.Unsafe.TryGetPointer<Transform3D>(collisionPair.Value.entityBCollbox, out var entityBCollTransform))
                 return;
@@ -180,7 +181,7 @@ namespace HnSF.core.systems
             }
                 
             if (entityAHasActorPhysics) entityABattleActorPhysics->SetExternalImpulse(f, collisionPair.Value.entityA, entityAPushImpulse);
-            if(entityBHasActorPhysics) entityBBattleActorPhysics->SetExternalImpulse(f, collisionPair.Value.entityB, entityBPushImpulse);
+            if(entityBHasActorPhysics) entityBBattleActorPhysics->SetExternalImpulse(f, collisionPair.Value.entityB, entityBPushImpulse);*/
         }
         
         protected virtual bool ThrowEntity(Frame f, ThrowboxCombatPair combatPair,

@@ -5,8 +5,8 @@ using Quantum;
 namespace HnSF.core.state.actions
 {
     [Serializable]
-    [AddTypeMenu(menuName: "Physics/Push Strength")]
-    public unsafe partial class SetPushStrength : HNSFStateAction
+    [AddTypeMenu(menuName: "Physics/Weight")]
+    public unsafe partial class SetWeight : HNSFStateAction
     {
         public HNSFParamFP hardness = (FP)1;
 
@@ -14,18 +14,18 @@ namespace HnSF.core.state.actions
             ref HNSFStateContext stateContext)
         {
             if (!frame.Unsafe.TryGetPointer<BattleActorPhysics>(entity, out var physics)) return false;
-            physics->pushStrength = hardness.Resolve(frame, entity, ref stateContext);
+            physics->weight = hardness.Resolve(frame, entity, ref stateContext);
             return false;
         }
 
         public override HNSFStateAction Copy()
         {
-            return CopyTo(new SetPushStrength());
+            return CopyTo(new SetWeight());
         }
 
         public override HNSFStateAction CopyTo(HNSFStateAction target)
         {
-            var t = target as SetPushStrength;
+            var t = target as SetWeight;
             t.hardness = hardness.Clone() as HNSFParamFP;
             return base.CopyTo(target);
         }
