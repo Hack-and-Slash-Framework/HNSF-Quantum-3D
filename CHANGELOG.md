@@ -1,3 +1,10 @@
+# [1.24.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.23.0...v1.24.0) (2026-08-13)
+
+
+### Features
+
+* Warningbox ([4c67b01](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/4c67b0153af60220e2ea28e9b5cef8d0452963c1))
+
 # [1.23.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.22.0...v1.23.0) (2026-08-04)
 
 
