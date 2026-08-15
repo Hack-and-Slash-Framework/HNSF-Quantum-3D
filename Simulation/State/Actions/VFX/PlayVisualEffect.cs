@@ -25,6 +25,7 @@ namespace HnSF.core.state.actions
                 entity: entity, 
                 position: transform->Position,
                 rotation: transform->EulerAngles,
+                scale: request.scale == FPVector3.Zero ? new FPVector3(1,1,1) : request.scale,
                 closestBodyPosition: FPVector3.Zero,
                 atClosestBodyPosition: atClosestBodyPosition);
             return false;

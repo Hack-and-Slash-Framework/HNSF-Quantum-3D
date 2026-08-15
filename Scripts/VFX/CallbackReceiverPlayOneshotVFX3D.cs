@@ -73,6 +73,7 @@ namespace HnSF
             var ve = GetPooledEffect(veAsset);
             ve.transform.position = callback.position.ToUnityVector3();
             ve.transform.rotation = Quaternion.Euler(callback.rotation.ToUnityVector3());
+            ve.transform.localScale = callback.scale.ToUnityVector3();
 
             if (!ve.TryGetComponent<VisualEffectBase>(out var veB)) return;
             veB.entryAsset = veAsset;

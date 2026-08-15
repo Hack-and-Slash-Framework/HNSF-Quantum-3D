@@ -28,6 +28,10 @@ namespace HnSF.core.GroupControl.Actions
         [SerializeReference, SubclassSelector]
 #endif
         public GroupControlFunctionFPVector3 playRotation;
+#if QUANTUM_UNITY
+        [SerializeReference, SubclassSelector]
+#endif
+        public GroupControlFunctionFPVector3 playScale;
         
         public override void OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
         {
@@ -40,9 +44,10 @@ namespace HnSF.core.GroupControl.Actions
             var vfx = request.GetRngVFX(frame.RNG);
             var pos = playPosition.Execute(frame, infoEntityRef, ref context);
             var rot = playRotation.Execute(frame, infoEntityRef, ref context);
+            var scale = playScale.Execute(frame, infoEntityRef, ref context);
             
             VisualEffectHelper.PlayVisualEffect(frame, request, vfx, infoEntityRef, pos, rot,
-                FPVector3.Zero, false);
+                scale, FPVector3.Zero, false);
         }
         
         public override bool Tick(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
@@ -66,6 +71,7 @@ namespace HnSF.core.GroupControl.Nodes
         public const string inVisualEffectRequestParam = "VisualEffectRequestParam";
         public const string inPositionFunction = "PositionFunction";
         public const string inRotationFunction = "RotationFunction";
+        public const string inScaleFunction = "ScaleFunction";
         
         protected override void OnDefinePorts(Node.IPortDefinitionContext context)
         {
@@ -81,6 +87,11 @@ namespace HnSF.core.GroupControl.Nodes
                 .WithConnectorUI(PortConnectorUI.Circle)
                 .Build();
             
+            context.AddInputPort(inScaleFunction)
+                .WithDisplayName("FPVector3 Scale Function")
+                .WithConnectorUI(PortConnectorUI.Circle)
+                .Build();
+            
             context.AddInputPort<AssetRef<ExternalPlayVisualEffectRequest>>(inVisualEffectRequestParam)
                 .WithDisplayName("Visual Effect Request")
                 .Build();
@@ -93,6 +104,7 @@ namespace HnSF.core.GroupControl.Nodes
                 vfxExternalRequest = NodeHelper.GetInputPortValue<AssetRef<ExternalPlayVisualEffectRequest>>(GetInputPortByName(inVisualEffectRequestParam)),
                 playPosition = ConvertFunctionNode<GroupControlFunctionFPVector3>(GetInputPortByName(inPositionFunction)),
                 playRotation = ConvertFunctionNode<GroupControlFunctionFPVector3>(GetInputPortByName(inRotationFunction)),
+                playScale = ConvertFunctionNode<GroupControlFunctionFPVector3>(GetInputPortByName(inScaleFunction)),
             };
         }
     }
