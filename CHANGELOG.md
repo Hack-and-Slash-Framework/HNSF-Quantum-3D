@@ -1,3 +1,10 @@
+# [1.25.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.24.0...v1.25.0) (2026-08-15)
+
+
+### Features
+
+* VFX Scaling ([6751064](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/67510648eb15ef25d58bab62f50b1619bae53983))
+
 # [1.24.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.23.0...v1.24.0) (2026-08-13)
 
 
