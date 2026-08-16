@@ -1,16 +1,13 @@
 using System;
 using Quantum;
-using Quantum.Physics2D;
 using HnSF.core.AI.HTN.Conditions;
 using HnSF.core.AI.HTN.Param;
-using HnSF.Nodes;
 using Photon.Deterministic;
 #if QUANTUM_UNITY
 using UnityEngine;
 #endif
 #if UNITY_EDITOR
-using HnSF.core.GroupControl.Nodes;
-using Unity.GraphToolkit.Editor;
+using HnSF.Nodes;
 #endif
 
 namespace HnSF.core.AI.HTN.Conditions
