@@ -1,3 +1,10 @@
+## [1.25.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.25.0...v1.25.1) (2026-08-16)
+
+
+### Bug Fixes
+
+* Fix build errors ([fe355ae](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/fe355ae4b4867d0a8e21cd746353c740cc48b9eb))
+
 # [1.25.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.24.0...v1.25.0) (2026-08-15)
 
 
