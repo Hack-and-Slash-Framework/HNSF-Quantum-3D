@@ -1,3 +1,4 @@
+#if ENABLE_ANIMANCER
 using System.Collections.Generic;
 using Animancer;
 using Photon.Deterministic;
@@ -411,3 +412,4 @@ namespace HnSF
         }
     }
 }
+#endif
