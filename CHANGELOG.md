@@ -1,3 +1,10 @@
+## [1.25.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.25.1...v1.25.2) (2026-08-18)
+
+
+### Bug Fixes
+
+* Fix animancer conditionals ([76216ed](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/76216edfb3caed4226cecf92cd806bcada8f5889))
+
 ## [1.25.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.25.0...v1.25.1) (2026-08-16)
 
 
