@@ -1,3 +1,10 @@
+# [1.26.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.25.2...v1.26.0) (2026-08-28)
+
+
+### Features
+
+* better threatzone reporting ([3365d0a](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/3365d0a163c917997f9a3c01b86ac20efcca4dfb))
+
 ## [1.25.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.25.1...v1.25.2) (2026-08-18)
 
 
