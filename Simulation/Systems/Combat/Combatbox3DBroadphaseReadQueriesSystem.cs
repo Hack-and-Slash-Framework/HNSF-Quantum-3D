@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using Quantum;
-using Quantum.Profiling;
 
 namespace HnSF.core.systems
 {
@@ -7,19 +7,55 @@ namespace HnSF.core.systems
     {
         public override void Update(Frame f)
         {
-            HostProfiler.Start("Combatbox_PARTITION_NARROWPHASE_READ_RESULTS");
-            {
-                ReadHitboxQueries(f);
-                ReadCollisionboxQueries(f);
-                ReadThrowboxQueries(f);
-                f.Signals.CombatboxResolvingPostNarrowphase();
-            }
-            HostProfiler.End();
+            ReadWarningboxQueries(f);
+            ReadHitboxQueries(f);
+            ReadCollisionboxQueries(f);
+            ReadThrowboxQueries(f);
+            f.Signals.CombatboxResolvingPostNarrowphase();
         }
 
-        private static void ReadHitboxQueries(Frame f)
+        protected virtual void ReadWarningboxQueries(Frame f)
         {
-            HostProfiler.Start("PARTITION_HITBOX_to_HITBOX");
+            foreach (var warningboxQuery in f.Context.WarningboxBroadphaseQueries)
+            {
+                if (!f.Physics3D.TryGetQueryHits(warningboxQuery.queryRef, out var hurtboxHits) ||
+                    hurtboxHits.Count == 0) continue;
+
+                Warningbox* attackerWarningbox = f.Unsafe.GetPointer<Warningbox>(warningboxQuery.entityRef);
+                Hurtbox* defenderHurtbox;
+
+                for (int i = 0; i < hurtboxHits.Count; i++)
+                {
+                    if (f.Unsafe.TryGetPointer<Hurtbox>(hurtboxHits[i].Entity, out defenderHurtbox))
+                    {
+                        if (defenderHurtbox->active == false
+                            || defenderHurtbox->owner == attackerWarningbox->owner
+                            || attackerWarningbox->active == false)
+                            continue;
+
+                        var key = new FrameContextUser.ThreatPairKey(warningboxQuery.entityRef, defenderHurtbox->owner);
+
+                        // We only want to bother with one hurtbox for a given defender of this warningbox.
+                        if (!f.Context.uniqueThreatPairs.Add(key))
+                            continue;
+                        
+                        var pairEntry = new FrameContextUser.ThreatPairEntry()
+                            {
+                                attacker = attackerWarningbox->owner,
+                                defender = defenderHurtbox->owner,
+                                warningbox = attackerWarningbox,
+                            };
+                        
+                        if(!f.Context.defenderToThreatCandidates.ContainsKey(defenderHurtbox->owner))
+                            f.Context.defenderToThreatCandidates.Add(defenderHurtbox->owner, new List<FrameContextUser.ThreatPairEntry>(4));
+                        f.Context.defenderToThreatCandidates[defenderHurtbox->owner].Add(pairEntry);
+                    }
+                }
+            }
+        }
+        
+        protected virtual void ReadHitboxQueries(Frame f)
+        {
             foreach (var hitboxQuery in f.Context.HitboxBroadphaseQueries)
             {
                 if (!f.Physics3D.TryGetQueryHits(hitboxQuery.queryRef, out var hitboxHits) ||
@@ -59,10 +95,9 @@ namespace HnSF.core.systems
                     }
                 }
             }
-            HostProfiler.End();
         }
 
-        private static void ReadCollisionboxQueries(Frame f)
+        protected virtual void ReadCollisionboxQueries(Frame f)
         {
             HostProfiler.Start("PARTITION_COLLISIONBOX_to_COLLISIONBOX");
             foreach (var collisionboxQuery in f.Context.CollisionboxBroadphaseQueries)
@@ -92,7 +127,7 @@ namespace HnSF.core.systems
             HostProfiler.End();
         }
 
-        private void ReadThrowboxQueries(Frame f)
+        protected virtual void ReadThrowboxQueries(Frame f)
         {
             HostProfiler.Start("PARTITION_THROWBOX_TO_HURTBOX");
             foreach (var throwboxQuery in f.Context.ThrowboxBroadphaseQueries)

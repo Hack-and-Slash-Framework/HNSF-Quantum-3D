@@ -1,11 +1,51 @@
 using System;
 using System.Collections.Generic;
+using HnSF;
 using Photon.Deterministic;
 
 namespace Quantum
 {
-    public partial class FrameContextUser
+    public unsafe partial class FrameContextUser
     {
+        public struct ThreatPairKey : IEquatable<ThreatPairKey>
+        {
+            public readonly EntityRef Warningbox;
+            public readonly EntityRef Defender;
+
+            public ThreatPairKey(EntityRef warningbox, EntityRef defender)
+            {
+                Warningbox = warningbox;
+                Defender = defender;
+            }
+
+            public bool Equals(ThreatPairKey other)
+            {
+                return Warningbox == other.Warningbox &&
+                       Defender == other.Defender;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is ThreatPairKey other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (Warningbox.GetHashCode() * 397) ^
+                           Defender.GetHashCode();
+                }
+            }
+        }
+        
+        public struct ThreatPairEntry
+        {
+            public EntityRef attacker;
+            public EntityRef defender;
+            public Warningbox* warningbox;
+        }
+        
         public struct PairEntry : IEquatable<PairEntry>
         {
             public EntityRef boxA;
@@ -60,12 +100,17 @@ namespace Quantum
         public HashSet<PairEntry> collisionboxToCollisionboxCollisions = new();
         public HashSet<PairEntry> throwboxToHurtboxCollisions = new();
         
+        public HashSet<ThreatPairKey> uniqueThreatPairs = new();
+        public Dictionary<EntityRef, List<ThreatPairEntry>> defenderToThreatCandidates = new();
+        
         public Dictionary<EntityRef, List<HitboxCombatPair>> defenderPotentiallyHitBy = new();
         public Dictionary<EntityRef, HashSet<EntityRef>> attackersPotentiallyHitting = new();
         public Dictionary<EntityRef, ClashCombatPair> clashCombatPairs = new();
         public Dictionary<EntityRef, CollisionCombatPair> collisionPairs = new();
         public Dictionary<CombatPairKeyAB, ThrowboxCombatPair> throwboxPairs = new();
 
+        public Dictionary<EntityRef, IncomingThreatsGroupEphemeral> defenderToPotentialThreats = new();
+        
         // QUEURIES
         public struct EntityToPhysicsQuery
         {
@@ -76,6 +121,8 @@ namespace Quantum
         public List<EntityToPhysicsQuery> HurtboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
         public List<EntityToPhysicsQuery> CollisionboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
         public List<EntityToPhysicsQuery> ThrowboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
+        public List<EntityToPhysicsQuery> WarningboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
+
         
         // CULLING
         public delegate bool CullingDelegate(FPVector3 position);
@@ -90,6 +137,9 @@ namespace Quantum
             collisionboxToCollisionboxCollisions.Clear();
             throwboxToHurtboxCollisions.Clear();
             
+            uniqueThreatPairs.Clear();
+            defenderToThreatCandidates.Clear();
+            
             defenderPotentiallyHitBy.Clear();
             attackersPotentiallyHitting.Clear();
             clashCombatPairs.Clear();
@@ -100,6 +150,9 @@ namespace Quantum
             HurtboxBroadphaseQueries.Clear();
             CollisionboxBroadphaseQueries.Clear();
             ThrowboxBroadphaseQueries.Clear();
+            WarningboxBroadphaseQueries.Clear();
+            
+            defenderToPotentialThreats.Clear();
         }
         
         public int GetIndexOfAttacker(EntityRef defenderEntityRef, EntityRef attackerRef)
