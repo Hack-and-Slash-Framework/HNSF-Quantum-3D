@@ -23,11 +23,11 @@ namespace HnSF.core.AI.HTN.Conditions
             var frame = context.frame;
             
             if (!frame.Unsafe.TryGetPointer<BattleActorAI>(context.agentEntityRef, out var battleActorAI)) return false;
-            if(!frame.Exists(battleActorAI->target)) return false;
+            if(!frame.Exists(battleActorAI->aiActorRef)) return false;
 
-            var targetTransform = frame.Unsafe.GetPointer<Transform3D>(battleActorAI->target);
+            var targetTransform = frame.Unsafe.GetPointer<Transform3D>(battleActorAI->aiActorRef);
             
-            if (frame.Unsafe.TryGetPointer<PhysicsCollider3D>(battleActorAI->target, out var physicsCollider2D))
+            if (frame.Unsafe.TryGetPointer<PhysicsCollider3D>(battleActorAI->aiActorRef, out var physicsCollider2D))
             {
                 HitCollection3D hc = frame.Physics3D.OverlapShape(
                     targetTransform->Position,
@@ -36,12 +36,12 @@ namespace HnSF.core.AI.HTN.Conditions
                     layerMask: frame.SimulationConfig.layerMaskWarningbox,
                     options: QueryOptions.HitAll);
 
-                var selfHasCombatTeam = frame.Unsafe.TryGetPointer<CombatTeam>(battleActorAI->target, out var selfCombatTeam);
+                var selfHasCombatTeam = frame.Unsafe.TryGetPointer<CombatTeam>(battleActorAI->aiActorRef, out var selfCombatTeam);
                 
                 for (int i = 0; i < hc.Count; i++)
                 {
                     var wb = frame.Unsafe.GetPointer<Warningbox>(hc[i].Entity);
-                    if(wb->owner == battleActorAI->target) continue;
+                    if(wb->owner == battleActorAI->aiActorRef) continue;
                     if (!frame.Exists(wb->owner)) return true;
                     if (!frame.Unsafe.TryGetPointer<CombatTeam>(wb->owner, out var otherCombatTeam)) return true;
                     if (selfHasCombatTeam && otherCombatTeam->IsHostileTowards(frame, selfCombatTeam)) return true;

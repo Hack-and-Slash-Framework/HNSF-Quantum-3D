@@ -25,9 +25,9 @@ namespace HnSF.core.AI.HTN.Conditions
         {
             var frame = context.frame;
             if (!frame.Unsafe.TryGetPointer<BattleActorAI>(context.agentEntityRef, out var battleActorAI)
-                || !frame.Unsafe.TryGetPointer<EntityTargeting>(battleActorAI->target, out var targeting)) return false;
+                || !frame.Unsafe.TryGetPointer<EntityTargeting>(battleActorAI->aiActorRef, out var targeting)) return false;
             
-            var selfTransform = frame.Unsafe.GetPointer<Transform3D>(battleActorAI->target);
+            var selfTransform = frame.Unsafe.GetPointer<Transform3D>(battleActorAI->aiActorRef);
             var targetTransform = frame.Unsafe.GetPointer<Transform3D>(targeting->target);
             
             var dist = FPVector3.DistanceSquared(selfTransform->Position, targetTransform->Position);

@@ -28,21 +28,13 @@ namespace HnSF.core.GroupControl.Actions
 
         public bool asTeleport;
         
-        public override void OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
+        public override BattleScriptResult OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
         {
             var otherEntityRef = entityGrabberFunction.Execute(frame, infoEntityRef, ref context);
-            if (!frame.Exists(otherEntityRef)) return;
+            if (!frame.Exists(otherEntityRef)) return BattleScriptResult.Failed;
             var transform3D = frame.Unsafe.GetPointer<Transform3D>(otherEntityRef);
             transform3D->Position = position.Execute(frame, infoEntityRef, ref context);
-        }
-        
-        public override bool Tick(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
-            return true;
-        }
-        
-        public override void OnExit(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
+            return BattleScriptResult.Succeeded;
         }
     }
 }

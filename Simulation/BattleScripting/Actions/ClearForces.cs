@@ -17,11 +17,7 @@ namespace HnSF.core.GroupControl.Actions
     {
         public GroupControlFunctionEntityRef[] entityRefFunctions = Array.Empty<GroupControlFunctionEntityRef>();
         
-        public override void OnEnter(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
-        }
-        
-        public override bool Tick(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
+        public override BattleScriptResult Tick(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
         {
             foreach (var entityRefFunction in entityRefFunctions)
             {
@@ -34,11 +30,7 @@ namespace HnSF.core.GroupControl.Actions
                     physics->SetOverallVelocity(frame, targetEntity, FPVector3.Zero);
                 }
             }
-            return true;
-        }
-        
-        public override void OnExit(Frame frame, EntityRef infoEntityRef, ref BattleScriptContext context)
-        {
+            return BattleScriptResult.Succeeded;
         }
     }
 }
