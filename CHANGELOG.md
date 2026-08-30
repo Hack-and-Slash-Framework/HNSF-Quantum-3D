@@ -1,3 +1,10 @@
+# [1.27.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.26.0...v1.27.0) (2026-08-30)
+
+
+### Features
+
+* Improved Battle Script handling ([fd2180d](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/fd2180d698dac1415a3002f139670317f3752af1))
+
 # [1.26.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.25.2...v1.26.0) (2026-08-28)
 
 
