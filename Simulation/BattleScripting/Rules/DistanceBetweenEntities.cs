@@ -3,7 +3,7 @@ using HnSF.core.GroupControl.Functions;
 using Photon.Deterministic;
 using Quantum;
 #if QUANTUM_UNITY
-using UnityEngine.Scripting.APIUpdating;
+using UnityEngine;
 #endif
 #if UNITY_EDITOR
 using HnSF.core.GroupControl.Nodes;
@@ -16,7 +16,13 @@ namespace HnSF.core.GroupControl.Grabbers
     public unsafe partial class DistanceBetweenEntities : GroupControlRule
     {
         public bool inverse;
+#if QUANTUM_UNITY
+        [SerializeReference, SubclassSelector]
+#endif
         public GroupControlFunctionEntityRef entityAFunct;
+#if QUANTUM_UNITY
+        [SerializeReference, SubclassSelector]
+#endif
         public GroupControlFunctionEntityRef entityBFunct;
 
         public ComparisonType comparison;

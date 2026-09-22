@@ -244,6 +244,11 @@ namespace HnSF
 
             if (callback.isGlobal || ownerEntity == null)
             {
+                if (globalManager == null)
+                {
+                    Debug.LogError("No Global sound manager.");
+                    return;
+                }
                 ownerSoundManager = globalManager;
                 ownerSoundManager.audioPool = audioSourcePools;
                 
