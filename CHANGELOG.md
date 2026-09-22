@@ -1,3 +1,10 @@
+## [1.27.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.27.0...v1.27.1) (2026-09-22)
+
+
+### Bug Fixes
+
+* Needed SerializeReferences ([b67952f](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/b67952fe0f117c0e52df5da9e1d4ad2c96a64353))
+
 # [1.27.0](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.26.0...v1.27.0) (2026-08-30)
 
 
