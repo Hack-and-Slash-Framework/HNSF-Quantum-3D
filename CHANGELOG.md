@@ -1,3 +1,10 @@
+## [1.27.2](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.27.1...v1.27.2) (2026-10-02)
+
+
+### Bug Fixes
+
+* Script moving ([7c99044](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/7c99044c077eb19ef09295fcaa5745ce42aff816))
+
 ## [1.27.1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.27.0...v1.27.1) (2026-09-22)
 
 
