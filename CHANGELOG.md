@@ -1,3 +1,10 @@
+## [1.27.4](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.27.3...v1.27.4) (2026-11-23)
+
+
+### Bug Fixes
+
+* Rename Warningbox to Telegraphbox ([21ecff1](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/commit/21ecff1524e4b6ad588dfb66fee29e6d141b6bdb))
+
 ## [1.27.3](https://github.com/Hack-and-Slash-Framework/HNSF-Quantum-3D/compare/v1.27.2...v1.27.3) (2026-10-02)
 
 
