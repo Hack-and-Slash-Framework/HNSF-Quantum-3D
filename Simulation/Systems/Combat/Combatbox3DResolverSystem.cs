@@ -14,25 +14,13 @@ namespace HnSF.core.systems
     {
         public override void Update(Frame f)
         {
-            HostProfiler.Start("Combatbox_Resolver");
-            
-            HostProfiler.Start("CollisionPairs");
             ResolveCollisionPairs(f);
-            HostProfiler.End();
             
-            HostProfiler.Start("HitboxHitboxPairs");
             ResolveHitboxHitboxPairs(f);
-            HostProfiler.End();
             
-            HostProfiler.Start("HitboxHurtboxPairs");
             ResolveHitboxHurtboxPairs(f);
-            HostProfiler.End();
             
-            HostProfiler.Start("ThrowboxHurtboxPairs");
             ResolveThrowboxHurtboxPairs(f);
-            HostProfiler.End();
-            
-            HostProfiler.End();
         }
 
         private void ResolveThrowboxHurtboxPairs(Frame frame)

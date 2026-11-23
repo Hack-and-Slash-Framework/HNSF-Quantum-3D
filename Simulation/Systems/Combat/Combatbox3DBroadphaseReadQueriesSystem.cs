@@ -7,21 +7,21 @@ namespace HnSF.core.systems
     {
         public override void Update(Frame f)
         {
-            ReadWarningboxQueries(f);
+            ReadTelegraphboxQueries(f);
             ReadHitboxQueries(f);
             ReadCollisionboxQueries(f);
             ReadThrowboxQueries(f);
             f.Signals.CombatboxResolvingPostNarrowphase();
         }
 
-        protected virtual void ReadWarningboxQueries(Frame f)
+        protected virtual void ReadTelegraphboxQueries(Frame f)
         {
-            foreach (var warningboxQuery in f.Context.WarningboxBroadphaseQueries)
+            foreach (var telegraphboxQuery in f.Context.TelegraphboxBroadphaseQueries)
             {
-                if (!f.Physics3D.TryGetQueryHits(warningboxQuery.queryRef, out var hurtboxHits) ||
+                if (!f.Physics3D.TryGetQueryHits(telegraphboxQuery.queryRef, out var hurtboxHits) ||
                     hurtboxHits.Count == 0) continue;
 
-                Warningbox* attackerWarningbox = f.Unsafe.GetPointer<Warningbox>(warningboxQuery.entityRef);
+                Telegraphbox* attackerTelegraphbox = f.Unsafe.GetPointer<Telegraphbox>(telegraphboxQuery.entityRef);
                 Hurtbox* defenderHurtbox;
 
                 for (int i = 0; i < hurtboxHits.Count; i++)
@@ -29,21 +29,21 @@ namespace HnSF.core.systems
                     if (f.Unsafe.TryGetPointer<Hurtbox>(hurtboxHits[i].Entity, out defenderHurtbox))
                     {
                         if (defenderHurtbox->active == false
-                            || defenderHurtbox->owner == attackerWarningbox->owner
-                            || attackerWarningbox->active == false)
+                            || defenderHurtbox->owner == attackerTelegraphbox->owner
+                            || attackerTelegraphbox->active == false)
                             continue;
 
-                        var key = new FrameContextUser.ThreatPairKey(warningboxQuery.entityRef, defenderHurtbox->owner);
+                        var key = new FrameContextUser.ThreatPairKey(telegraphboxQuery.entityRef, defenderHurtbox->owner);
 
-                        // We only want to bother with one hurtbox for a given defender of this warningbox.
+                        // We only want to bother with one hurtbox for a given defender of this telegraphbox.
                         if (!f.Context.uniqueThreatPairs.Add(key))
                             continue;
                         
                         var pairEntry = new FrameContextUser.ThreatPairEntry()
                             {
-                                attacker = attackerWarningbox->owner,
+                                attacker = attackerTelegraphbox->owner,
                                 defender = defenderHurtbox->owner,
-                                warningbox = attackerWarningbox,
+                                telegraphbox = attackerTelegraphbox,
                             };
                         
                         if(!f.Context.defenderToThreatCandidates.ContainsKey(defenderHurtbox->owner))

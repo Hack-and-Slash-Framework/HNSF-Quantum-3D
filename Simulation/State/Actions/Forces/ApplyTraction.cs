@@ -103,6 +103,9 @@ namespace HnSF.core.state.actions
             t.modifierType = modifierType;
             t.traction = traction.Clone() as HNSFParamFP;
             t.multiplier = multiplier.Clone() as HNSFParamFP;
+            t.useCurve = useCurve;
+            t.tractionMultiplierCurve = tractionMultiplierCurve;
+            t.tractionCurveTimeType = tractionCurveTimeType;
             return base.CopyTo(target);
         }
     }

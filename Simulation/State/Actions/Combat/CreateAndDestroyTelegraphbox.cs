@@ -1,22 +1,24 @@
-using Photon.Deterministic;
+﻿using Photon.Deterministic;
 using System;
 using System.Linq;
 using Quantum;
+using UnityEngine.Scripting.APIUpdating;
 
 namespace HnSF.core.state.actions
 {
     [Serializable]
-    public unsafe partial class CreateWarningbox : HNSFStateAction
+    [MovedFrom(autoUpdateAPI: false, sourceClassName: "CreateAndDestroyWarningbox")]
+    public unsafe partial class CreateAndDestroyTelegraphbox : HNSFStateAction
     {
+        public bool autoDelete = true;
         public int identifier;
-        public int priority;
         public AssetRef<HitInfoBase> hitInfo;
         public bool isThrow;
         public int activeAtOffset;
         public int inactiveAtOffset;
         public byte dangerLevel;
         public byte responseDifficulty;
-
+        
         public bool useExternalShapeConfig;
         [DrawIf(nameof(useExternalShapeConfig), true)]
         public AssetRef<Shape3DConfigOffsetRotation> externalShapeConfigReference;
@@ -32,15 +34,16 @@ namespace HnSF.core.state.actions
         {
             if (!frame.Unsafe.TryGetPointer<BoxCombatant>(entity, out var boxCombatant)
                 || !frame.Unsafe.TryGetPointer<Transform3D>(entity, out var transform)) return false;
-            
-            var boxList = frame.ResolveList(boxCombatant->warningboxList);
 
-            if (boxCombatant->WarningboxExistWithId(frame, identifier))
+            if (autoDelete && rangePercent >= 1)
             {
-                Log.Debug($"Warningbox of id {identifier} already exist on entity {entity.ToString()}. Error came from state {frame.FindAsset<HNSFState>(stateContext.workingState).Label}");
+                boxCombatant->DeleteTelegraphboxByID(frame, identifier);
                 return false;
             }
-
+            if (boxCombatant->TelegraphboxExistWithId(frame, identifier)) return false;
+            
+            
+            var boxList = frame.ResolveList(boxCombatant->telegraphboxList);
             Shape3D shape;
             FPVector3 realOffset;
             FPVector3 realRotation;
@@ -56,17 +59,16 @@ namespace HnSF.core.state.actions
                 realOffset = offset;
                 realRotation = rotation;
             }
-            
-            var boxEntity = frame.Create();
-            
+                
             var physicsCollider = new PhysicsCollider3D
             {
-                Layer = frame.Layers.GetLayerIndex(HnSFConstants.Layer_Warningbox),
+                Layer = frame.SimulationConfig.layerTelegraphbox,
                 IsTrigger = true,
                 Shape = shape
             };
-
-            frame.Add(boxEntity, new Warningbox()
+                
+            var boxEntity = frame.Create();
+            frame.Add(boxEntity, new Telegraphbox()
             {
                 active = true, 
                 owner = entity, 
@@ -81,21 +83,20 @@ namespace HnSF.core.state.actions
             frame.Add(boxEntity, new Transform3D(){ Position = transform->Position + transform->TransformDirection(realOffset), Rotation = FPQuaternion.Euler(transform->EulerAngles + realRotation)});
             frame.Add(boxEntity, new Parented3D() { parent = entity, localOffset = realOffset, localEuler = realRotation });
             frame.Add(boxEntity, physicsCollider);
-            
             boxList.Add(boxEntity);
             return false;
         }
 
         public override HNSFStateAction Copy()
         {
-            return CopyTo(new CreateWarningbox());
+            return CopyTo(new CreateAndDestroyTelegraphbox());
         }
 
         public override HNSFStateAction CopyTo(HNSFStateAction target)
         {
-            var t = target as CreateWarningbox;
+            var t = target as CreateAndDestroyTelegraphbox;
+            t.autoDelete = autoDelete;
             t.identifier = identifier;
-            t.priority = priority;
             t.hitInfo = hitInfo;
             t.isThrow = isThrow;
             t.dangerLevel = dangerLevel;

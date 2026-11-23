@@ -11,7 +11,7 @@ namespace HnSF.core.systems
             hurtbox,
             collisionbox,
             throwbox,
-            warningbox
+            telegraphbox
         }
 
         public override void OnInit(Frame f)
@@ -25,16 +25,12 @@ namespace HnSF.core.systems
             f.Signals.CombatboxResolvingPreBroadphase();
             EventReceiverHelper.CallEvent(f, (int)EventReceiverTyping.PreCombatboxBroadphase);
             
-            HostProfiler.Start("Combatbox_PARTITION_BROADPHASE_QUERIES");
             {
-                HostProfiler.Start("BUILD FILTERS");
                 var hitboxFilter = f.Filter<Hitbox, Transform3D, PhysicsCollider3D>();
                 var collisionboxFilter = f.Filter<Collisionbox, Transform3D, PhysicsCollider3D>();
                 var throwboxFilter = f.Filter<Throwbox, Transform3D, PhysicsCollider3D>();
-                var warningboxFilter = f.Filter<Warningbox, Transform3D, PhysicsCollider3D>();
-                HostProfiler.End();
-
-                HostProfiler.Start("Do Filters");
+                var telegraphboxFilter = f.Filter<Telegraphbox, Transform3D, PhysicsCollider3D>();
+                
                 while (hitboxFilter.NextUnsafe(out var entityRef, out _, out var transform, out var physicsCollider3D))
                 {
                     DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.hitbox);
@@ -52,14 +48,12 @@ namespace HnSF.core.systems
                     DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.throwbox);
                 }
                 
-                while (warningboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
+                while (telegraphboxFilter.NextUnsafe(out var entityRef, out _, out var transform,
                            out var physicsCollider3D))
                 {
-                    DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.warningbox);
+                    DoQuery(f, ref entityRef, transform, physicsCollider3D, CombatboxType.telegraphbox);
                 }
-                HostProfiler.End();
             }
-            HostProfiler.End();
         }
         protected virtual void DoQuery(Frame frame, ref EntityRef entityRef, Transform3D* boxTransform, PhysicsCollider3D* boxCollider, CombatboxType boxType)
         {
@@ -71,24 +65,24 @@ namespace HnSF.core.systems
             switch (boxType)
             {
                 case CombatboxType.hitbox:
-                    layerMask = simConfig.layerMaskHitbox | simConfig.layerMaskHurtbox;
+                    layerMask = (1 << simConfig.layerHitbox) | (1 << simConfig.layerHurtbox);
                     queryList = frame.Context.HitboxBroadphaseQueries;
                     break;
                 case CombatboxType.hurtbox:
-                    layerMask = simConfig.layerMaskHitbox;
+                    layerMask = 1 << simConfig.layerHitbox;
                     queryList = frame.Context.HurtboxBroadphaseQueries;
                     break;
                 case CombatboxType.collisionbox:
-                    layerMask = simConfig.layerMaskCollisionbox;
+                    layerMask = 1 << simConfig.layerCollisionbox;
                     queryList = frame.Context.CollisionboxBroadphaseQueries;
                     break;
                 case CombatboxType.throwbox:
-                    layerMask = simConfig.layerMaskHurtbox;
+                    layerMask = 1 << simConfig.layerHurtbox;
                     queryList = frame.Context.ThrowboxBroadphaseQueries;
                     break;
-                case CombatboxType.warningbox:
-                    layerMask = simConfig.layerMaskHurtbox;
-                    queryList = frame.Context.WarningboxBroadphaseQueries;
+                case CombatboxType.telegraphbox:
+                    layerMask = 1 << simConfig.layerHurtbox;
+                    queryList = frame.Context.TelegraphboxBroadphaseQueries;
                     break;
                 default:
                     return;

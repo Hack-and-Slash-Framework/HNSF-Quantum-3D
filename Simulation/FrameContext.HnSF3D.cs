@@ -9,18 +9,18 @@ namespace Quantum
     {
         public struct ThreatPairKey : IEquatable<ThreatPairKey>
         {
-            public readonly EntityRef Warningbox;
+            public readonly EntityRef Telegraphbox;
             public readonly EntityRef Defender;
 
-            public ThreatPairKey(EntityRef warningbox, EntityRef defender)
+            public ThreatPairKey(EntityRef telegraphbox, EntityRef defender)
             {
-                Warningbox = warningbox;
+                Telegraphbox = telegraphbox;
                 Defender = defender;
             }
 
             public bool Equals(ThreatPairKey other)
             {
-                return Warningbox == other.Warningbox &&
+                return Telegraphbox == other.Telegraphbox &&
                        Defender == other.Defender;
             }
 
@@ -33,7 +33,7 @@ namespace Quantum
             {
                 unchecked
                 {
-                    return (Warningbox.GetHashCode() * 397) ^
+                    return (Telegraphbox.GetHashCode() * 397) ^
                            Defender.GetHashCode();
                 }
             }
@@ -43,7 +43,7 @@ namespace Quantum
         {
             public EntityRef attacker;
             public EntityRef defender;
-            public Warningbox* warningbox;
+            public Telegraphbox* telegraphbox;
         }
         
         public struct PairEntry : IEquatable<PairEntry>
@@ -121,7 +121,7 @@ namespace Quantum
         public List<EntityToPhysicsQuery> HurtboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
         public List<EntityToPhysicsQuery> CollisionboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
         public List<EntityToPhysicsQuery> ThrowboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
-        public List<EntityToPhysicsQuery> WarningboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
+        public List<EntityToPhysicsQuery> TelegraphboxBroadphaseQueries = new List<EntityToPhysicsQuery>(20);
 
         
         // CULLING
@@ -150,7 +150,7 @@ namespace Quantum
             HurtboxBroadphaseQueries.Clear();
             CollisionboxBroadphaseQueries.Clear();
             ThrowboxBroadphaseQueries.Clear();
-            WarningboxBroadphaseQueries.Clear();
+            TelegraphboxBroadphaseQueries.Clear();
             
             defenderToPotentialThreats.Clear();
         }

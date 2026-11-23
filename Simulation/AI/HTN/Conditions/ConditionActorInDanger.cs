@@ -33,14 +33,14 @@ namespace HnSF.core.AI.HTN.Conditions
                     targetTransform->Position,
                     targetTransform->Rotation,
                     Shape3D.CreateSphere(physicsCollider2D->Shape.BroadRadius),
-                    layerMask: frame.SimulationConfig.layerMaskWarningbox,
+                    layerMask: 1 << frame.SimulationConfig.layerTelegraphbox,
                     options: QueryOptions.HitAll);
 
                 var selfHasCombatTeam = frame.Unsafe.TryGetPointer<CombatTeam>(battleActorAI->aiActorRef, out var selfCombatTeam);
                 
                 for (int i = 0; i < hc.Count; i++)
                 {
-                    var wb = frame.Unsafe.GetPointer<Warningbox>(hc[i].Entity);
+                    var wb = frame.Unsafe.GetPointer<Telegraphbox>(hc[i].Entity);
                     if(wb->owner == battleActorAI->aiActorRef) continue;
                     if (!frame.Exists(wb->owner)) return true;
                     if (!frame.Unsafe.TryGetPointer<CombatTeam>(wb->owner, out var otherCombatTeam)) return true;

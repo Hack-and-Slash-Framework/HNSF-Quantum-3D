@@ -39,7 +39,7 @@ namespace HnSF.core.systems
                 ephemeralGroup.bestOverall = currentEphemeral;
             }
 
-            if (pair.warningbox->isThrow)
+            if (pair.telegraphbox->isThrow)
             {
                 if (IsThreatBetterThan(frame, pair, currentEphemeral, ephemeralGroup.bestThrow))
                 {
@@ -48,7 +48,7 @@ namespace HnSF.core.systems
             }
             else
             {
-                var isProjectile = pair.warningbox->isProjectile;
+                var isProjectile = pair.telegraphbox->isProjectile;
 
                 if (isProjectile && IsThreatBetterThan(frame, pair, currentEphemeral, ephemeralGroup.bestProjectile))
                 {
@@ -70,12 +70,12 @@ namespace HnSF.core.systems
             return new IncomingThreatEphemeral()
             {
                 sourceAttacker = pair.attacker,
-                isThrow = pair.warningbox->isThrow,
-                isProjectile = pair.warningbox->isProjectile,
-                impactAtFrame = pair.warningbox->activeAt,
-                endAtFrame = pair.warningbox->inactiveAt,
-                dangerLevel = pair.warningbox->dangerLevel,
-                responseDifficulty = pair.warningbox->responseDifficulty
+                isThrow = pair.telegraphbox->isThrow,
+                isProjectile = pair.telegraphbox->isProjectile,
+                impactAtFrame = pair.telegraphbox->activeAt,
+                endAtFrame = pair.telegraphbox->inactiveAt,
+                dangerLevel = pair.telegraphbox->dangerLevel,
+                responseDifficulty = pair.telegraphbox->responseDifficulty
             };
         }
 
